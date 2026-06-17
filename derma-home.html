@@ -18,6 +18,8 @@
 .dh-feats .f .fi svg{width:23px;height:23px;stroke:var(--green-d);fill:none;stroke-width:1.7}
 .dh-feats .f h3{font-size:16px;font-weight:800;margin-bottom:7px}
 .dh-feats .f p{font-size:13.5px;color:var(--graphite);line-height:1.7}
+.dh-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
+.dh-gallery img{width:100%;aspect-ratio:1;object-fit:contain;background:#0d0d0d;border-radius:var(--radius-sm)}
 .dh-embed{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper)}
 .dh-embed iframe{width:100%;height:1400px;border:0;display:block}
 .dh-note{font-size:12.5px;color:var(--muted);font-weight:700;text-align:center;margin-top:14px}
@@ -45,7 +47,14 @@
     <h2 style="font-size:34px">Multi-energy care, at home</h2>
     <p style="margin-top:12px;color:var(--graphite);font-weight:400;font-size:16px;line-height:1.8">Derma Home brings professional multi-energy technology into your daily routine — combining Radiofrequency, Ultrasonic and Iontophoresis in a single device to care for face, scalp and body. Gentle, consistent and easy to use.</p>
   </div>
-  <div class="reveal" style="text-align:center;margin:0 0 40px"><img src="assets/img/dermahome.png" alt="UNI&CORE Derma Home device" style="max-height:420px;max-width:100%;width:auto;object-fit:contain" onerror="this.style.display='none'"></div>
+  <div class="reveal dh-gallery" style="margin:0 0 40px">
+    <img src="assets/img/dermahome.png" alt="UNI&CORE Derma Home device" onerror="this.style.display='none'">
+    <img src="assets/img/dermahome-2.png" alt="Derma Home handpiece" onerror="this.style.display='none'">
+    <img src="assets/img/dermahome-3.png" alt="Derma Home handpiece" onerror="this.style.display='none'">
+    <img src="assets/img/dermahome-4.png" alt="Derma Home handpiece" onerror="this.style.display='none'">
+    <img src="assets/img/dermahome-5.png" alt="Derma Home handpiece" onerror="this.style.display='none'">
+    <img src="assets/img/dermahome-6.png" alt="Derma Home handpiece" onerror="this.style.display='none'">
+  </div>
   <div class="dh-feats reveal">
     <div class="f"><div class="fi"><svg viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></svg></div><h3>RF · Radiofrequency</h3><p>Warms the dermis to support collagen renewal and contraction — for firmness, lift and anti-aging care.</p></div>
     <div class="f"><div class="fi"><svg viewBox="0 0 24 24"><path d="M3 12c3 0 3-6 6-6s3 12 6 12 3-6 6-6"/></svg></div><h3>Ultrasonic</h3><p>Deep ultrasonic energy targets the deeper support layers for tissue contraction and a tightened feel.</p></div>
