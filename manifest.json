@@ -1,0 +1,22 @@
+{
+  "name": "UNI&CORE — AI Beauty & Healthcare Super Platform",
+  "short_name": "UNI&CORE",
+  "description": "A global beauty & healthcare platform combining AI skin analysis, derma devices and healthcare",
+  "lang": "en",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#5C9A46",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' fill='%23FFFFFF'/%3E%3Crect x='40' y='52' width='24' height='88' fill='%23A7A8A8'/%3E%3Crect x='84' y='52' width='24' height='88' fill='%235C9A46'/%3E%3Crect x='128' y='52' width='24' height='88' fill='%233A3A3A'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23FFFFFF'/%3E%3Crect x='108' y='140' width='64' height='232' fill='%23A7A8A8'/%3E%3Crect x='224' y='140' width='64' height='232' fill='%235C9A46'/%3E%3Crect x='340' y='140' width='64' height='232' fill='%233A3A3A'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

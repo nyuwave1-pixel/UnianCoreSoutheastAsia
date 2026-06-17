@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="description" content="UNI&CORE product detail — authentic HQ K-beauty / healthcare products with Shopee pricing." />
+<title>Product Detail — UNI&CORE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="products">
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+<section class="section"><div class="wrap">
+  <div id="pdRoot"></div>
+</div></section>
+
+<section class="section alt"><div class="wrap">
+  <div class="shead reveal"><div class="k">You may also like</div><h2>Related products</h2></div>
+  <div class="pgrid" id="related"></div>
+</div></section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/app.js"></script>
+<script>
+const id = new URLSearchParams(location.search).get('id') || 1;
+const p = UNICORE.get(id);
+const root = document.getElementById('pdRoot');
+if(!p){ root.innerHTML='<p style="text-align:center;padding:60px;color:#8C8F8C;font-weight:700">Product not found. <a href="products.html" style="color:#467A35">View all products</a></p>'; }
+else {
+  const price = `<span class="big">${UNICORE.peso(p.php)}</span><span class="ref">${p.live?'Shopee price':'Member price'}</span>`;
+  const buy = p.live
+    ? `<button class="btn btn-green" onclick="UNICORE.addToCart(${p.id})">Add to cart →</button>
+       <a class="btn btn-dark" href="${UNICORE.SHOPEE}" target="_blank" rel="noopener">Buy on Shopee</a>`
+    : `<button class="btn btn-green" onclick="UNICORE.addToCart(${p.id})">Add to cart →</button>
+       <a class="btn btn-outline" href="ai-analysis.html">Get a recommendation</a>`;
+  document.title = p.name + ' — UNI&CORE';
+  root.innerHTML = `
+    <div class="crumb" style="font-size:12.5px;font-weight:700;color:#8C8F8C;margin-bottom:20px"><a href="index.html" style="color:#8C8F8C">HOME</a> › <a href="products.html" style="color:#8C8F8C">SHOP</a> › ${p.cat}</div>
+    <div class="pd">
+      <div class="pimg reveal"><img src="${UNICORE.PIMG}${p.img}" alt="${p.name}" onerror="this.style.display='none'"></div>
+      <div class="pinfo reveal">
+        <span class="pill">${p.live?'BEST · On Shopee':'New'}</span>
+        <div class="cat">${p.cat}</div>
+        <h1>${p.name}</h1>
+        <div class="desc">${p.desc}</div>
+        <div class="priceline">${price}</div>
+        <div class="pbtns">${buy}</div>
+        <div class="feats">
+          <div class="ft"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Authentic K-Beauty from HQ</div>
+          <div class="ft"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/></svg>Safe ingredients · quality controlled</div>
+          <div class="ft"><svg viewBox="0 0 24 24"><path d="M3 7h13v10H3zM16 10h4l1 3v4h-5"/><circle cx="7" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg>Extra discount & free shipping with subscription</div>
+        </div>
+      </div>
+    </div>`;
+}
+const rel = UNICORE.PRODUCTS.filter(x=>p&&x.cat===p.cat&&x.id!=id).slice(0,4);
+const host=document.getElementById('related');
+host.innerHTML = rel.map(x=>{
+  const pb = `<div class="p">${UNICORE.peso(x.php)} <small>${x.live?'Shopee':'Member'}</small></div>`;
+  const bd = x.live?`<span class="badge">On Shopee</span>`:`<span class="badge soon">New</span>`;
+  return `<a class="prod" href="product-detail.html?id=${x.id}"><div class="img">${bd}<span class="ph">${x.name.slice(0,16)}</span>
+    <img src="${UNICORE.PIMG}${x.img}" alt="${x.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+    <div class="body"><div class="cat">${x.cat}</div><div class="nm">${x.name}</div>${pb}</div></a>`;
+}).join('');
+</script>
+</body>
+</html>

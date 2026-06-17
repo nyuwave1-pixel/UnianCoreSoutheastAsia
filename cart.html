@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="robots" content="noindex" />
+<title>Cart — UNI&CORE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="products">
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+<section class="page-hero">
+  <div class="bg" style="background-image:url('https://superhero.co.kr/unincore/images/main/main_02.jpg')"></div>
+  <div class="wrap"><div class="crumb"><a href="index.html">HOME</a> › CART</div><h1>Cart</h1><p>Checkout is completed securely on the Shopee store.</p></div>
+</section>
+
+<section class="section"><div class="wrap">
+  <div id="cartRoot"></div>
+</div></section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/app.js"></script>
+<script>
+function render(){
+  const cart=UNICORE.getCart();const ids=Object.keys(cart).filter(id=>cart[id]>0);
+  const root=document.getElementById('cartRoot');
+  if(!ids.length){root.innerHTML=`<div class="cempty"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6L5 3H2"/></svg><h3 style="font-size:18px;color:#2B2B2B;margin-bottom:8px">Your cart is empty</h3><p style="margin-bottom:20px">Add products that are live on Shopee.</p><a class="btn btn-green" href="products.html">Continue shopping →</a></div>`;return;}
+  let total=0;
+  const items=ids.map(id=>{const p=UNICORE.get(id);const q=cart[id];const line=p.php*q;total+=line;
+    return `<div class="citem"><div class="ci-img"><img src="${UNICORE.PIMG}${p.img}" alt="${p.name}" onerror="this.style.display='none'"></div>
+      <div class="ci-b"><div class="nm">${p.name}</div><div class="pr">${UNICORE.peso(p.php)}</div>
+        <div class="qty"><button onclick="chg(${id},-1)" aria-label="Decrease quantity">−</button><b>${q}</b><button onclick="chg(${id},1)" aria-label="Increase quantity">+</button>
+        <button class="rm" onclick="chg(${id},-999)">Remove</button></div></div></div>`;}).join('');
+  root.innerHTML=`<div class="cart">
+    <div>${items}</div>
+    <div class="csum"><h3>Order summary</h3>
+      <div class="row"><span>Subtotal</span><span>${UNICORE.peso(total)}</span></div>
+      <div class="row"><span>Shipping</span><span>Per Shopee policy</span></div>
+      <div class="total"><span>Total</span><span>${UNICORE.peso(total)}</span></div>
+      <a class="btn btn-green" style="width:100%;margin-top:18px" href="${UNICORE.SHOPEE}" target="_blank" rel="noopener">Checkout on Shopee →</a>
+      <a class="btn btn-outline" style="width:100%;margin-top:10px" href="products.html">Continue shopping</a>
+      <p style="font-size:12px;color:#8C8F8C;margin-top:14px;font-weight:700;text-align:center">Payment & delivery are handled on the Shopee store.</p>
+    </div></div>`;
+}
+window.chg=function(id,d){const c=UNICORE.getCart();if(d===-999){delete c[id];}else{c[id]=(c[id]||0)+d;if(c[id]<=0)delete c[id];}UNICORE.setCart(c);render();};
+render();
+</script>
+</body>
+</html>

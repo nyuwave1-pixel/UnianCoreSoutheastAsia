@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<title>UNI&CORE — AI Beauty & Healthcare Super Platform 3.0 (Desktop)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --white:#FFFFFF;--paper:#F6F6F3;--sand:#EDEEEA;--line:#E5E6E1;
+  --ink:#2B2B2B;--graphite:#54585A;--muted:#8C8F8C;
+  --silver:#A7A8A8;--green:#5C9A46;--green-d:#467A35;--green-l:#EAF2E3;--charcoal:#3A3A3A;
+  --radius:20px;--radius-sm:14px;
+  --shadow-sm:0 2px 14px rgba(43,43,43,.06);
+  --shadow-md:0 18px 50px rgba(43,43,43,.14);
+  --shadow-green:0 12px 30px rgba(92,154,70,.30);
+  --maxw:1280px;
+  --sans:'Nanum Gothic',system-ui,-apple-system,'Malgun Gothic',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--white);line-height:1.5}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 40px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:none;
+  font-family:var(--sans);font-weight:800;transition:.2s}
+.btn-green{background:var(--green);color:#fff;height:54px;padding:0 30px;border-radius:14px;font-size:15px;box-shadow:var(--shadow-green)}
+.btn-green:hover{background:var(--green-d);transform:translateY(-2px)}
+.btn-line{background:transparent;color:#fff;height:54px;padding:0 26px;border-radius:14px;font-size:15px;border:1px solid rgba(255,255,255,.5)}
+.btn-line:hover{background:rgba(255,255,255,.12)}
+.btn-dark{background:var(--charcoal);color:#fff;height:48px;padding:0 26px;border-radius:12px;font-size:14px}
+.btn-dark:hover{background:#000;transform:translateY(-2px)}
+
+/* logo */
+.logo{display:flex;align-items:center;gap:10px}
+.logo .mark{display:flex;gap:4px}
+.logo .mark i{display:block;width:6px;height:26px;border-radius:1px}
+.logo .mark i:nth-child(1){background:var(--silver)}
+.logo .mark i:nth-child(2){background:var(--green)}
+.logo .mark i:nth-child(3){background:var(--charcoal)}
+.logo .word{font-weight:800;font-size:22px;letter-spacing:.5px;color:var(--graphite)}
+.logo .word b{color:var(--green)}
+
+/* ===== Header ===== */
+.topbar{background:var(--charcoal);color:#cfd0cd;font-size:12px;font-weight:700}
+.topbar .wrap{display:flex;justify-content:flex-end;align-items:center;gap:22px;height:38px}
+.topbar a{color:#cfd0cd}.topbar a:hover{color:#fff}
+.topbar .sep{width:1px;height:13px;background:#55564f}
+
+header.nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px}
+.menu{display:flex;gap:38px}
+.menu>li{position:relative;list-style:none}
+.menu>li>a{display:flex;align-items:center;height:78px;font-weight:800;font-size:15.5px;color:var(--ink)}
+.menu>li>a:hover{color:var(--green)}
+.menu>li::after{content:"";position:absolute;left:0;bottom:22px;width:0;height:2px;background:var(--green);transition:.25s}
+.menu>li:hover::after{width:100%}
+.submenu{position:absolute;top:78px;left:50%;transform:translateX(-50%) translateY(8px);background:#fff;border:1px solid var(--line);
+  border-radius:14px;box-shadow:var(--shadow-md);padding:10px;min-width:190px;opacity:0;visibility:hidden;transition:.2s}
+.menu>li:hover .submenu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+.submenu a{display:block;padding:10px 14px;font-size:13.5px;font-weight:700;color:var(--graphite);border-radius:9px;white-space:nowrap}
+.submenu a:hover{background:var(--green-l);color:var(--green-d)}
+.nav-tools{display:flex;align-items:center;gap:10px}
+.nav-tools .ic{width:42px;height:42px;border-radius:12px;border:1px solid var(--line);display:grid;place-items:center;cursor:pointer;transition:.2s}
+.nav-tools .ic:hover{background:var(--paper)}
+.nav-tools .ic svg{width:20px;height:20px;stroke:var(--graphite);fill:none;stroke-width:1.7}
+.nav-tools .lang{height:42px;padding:0 14px;border:1px solid var(--line);border-radius:12px;display:grid;place-items:center;font-size:13px;font-weight:800;color:var(--graphite);cursor:pointer}
+
+/* ===== Hero ===== */
+.hero{position:relative;height:88vh;min-height:620px;overflow:hidden;color:#fff;display:flex;align-items:center}
+.hero .vfallback{position:absolute;inset:0;width:100%;height:100%;z-index:0;background:linear-gradient(125deg,#2f3330,#46604a 55%,#1c1f1c)}
+.hero video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1}
+.hero .scrim{position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(15,17,15,.74) 0%,rgba(15,17,15,.32) 50%,rgba(15,17,15,.04) 80%)}
+.hero .wrap{position:relative;z-index:3;width:100%}
+.hero .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:13px;font-weight:800;letter-spacing:3px;color:#cfe6c2;text-transform:uppercase;margin-bottom:22px}
+.hero .eyebrow .mark{display:flex;gap:3px}.hero .eyebrow .mark i{width:4px;height:15px;display:block}
+.hero .eyebrow .mark i:nth-child(1){background:var(--silver)}.hero .eyebrow .mark i:nth-child(2){background:var(--green)}.hero .eyebrow .mark i:nth-child(3){background:#cfe6c2}
+.hero h1{font-size:58px;font-weight:800;line-height:1.12;letter-spacing:-1.5px;margin-bottom:20px}
+.hero h1 em{font-style:normal;color:#a9d693}
+.hero p{font-size:18px;line-height:1.7;color:rgba(255,255,255,.88);max-width:540px;margin-bottom:34px}
+.hero .cta{display:flex;gap:14px}
+.hero .scrollcue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;color:rgba(255,255,255,.7);font-size:11px;font-weight:700;letter-spacing:2px;text-align:center}
+.hero .scrollcue span{display:block;width:1px;height:34px;background:rgba(255,255,255,.5);margin:8px auto 0;animation:cue 1.8s infinite}
+@keyframes cue{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+/* ===== Stats bar ===== */
+.stats{background:var(--charcoal);color:#fff}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:42px;padding-bottom:42px}
+.stat{text-align:center;position:relative}
+.stat+.stat::before{content:"";position:absolute;left:0;top:14%;height:72%;width:1px;background:#4a4b45}
+.stat .n{font-size:38px;font-weight:800;letter-spacing:-1px;color:#fff;font-variant-numeric:tabular-nums}
+.stat .n b{color:var(--green)}
+.stat .l{font-size:13.5px;color:#9a9c97;margin-top:8px;font-weight:700}
+
+/* ===== Section heading ===== */
+.section{padding:96px 0}
+.section.alt{background:var(--paper)}
+.shead{text-align:center;margin-bottom:54px}
+.shead .k{font-size:13px;font-weight:800;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:14px}
+.shead h2{font-size:42px;font-weight:800;letter-spacing:-1px;line-height:1.2}
+.shead p{font-size:16px;color:var(--muted);margin-top:14px;font-weight:700}
+
+/* solutions */
+.sol-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.sol{position:relative;border-radius:var(--radius);overflow:hidden;min-height:420px;color:#fff;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:34px;box-shadow:var(--shadow-sm);transition:.3s}
+.sol:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.sol .bg{position:absolute;inset:0;z-index:0;transition:.5s}
+.sol:hover .bg{transform:scale(1.06)}
+.sol.beauty .bg{background:linear-gradient(160deg,#5c9a46,#2f5a23)}
+.sol.device .bg{background:linear-gradient(160deg,#54585a,#222)}
+.sol.health .bg{background:linear-gradient(160deg,#9aa39a,#56654f)}
+.sol .scrim{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent 60%)}
+.sol .c{position:relative;z-index:2}
+.sol .k{font-size:12px;font-weight:800;letter-spacing:2px;opacity:.92;text-transform:uppercase}
+.sol h3{font-size:30px;font-weight:800;margin:8px 0 12px;letter-spacing:-.5px}
+.sol p{font-size:15px;color:rgba(255,255,255,.9);line-height:1.6;margin-bottom:20px}
+.sol .go{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:800;padding:12px 22px;
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.35);border-radius:30px;transition:.2s}
+.sol .go:hover{background:#fff;color:var(--ink)}
+
+/* AI skin split */
+.skin{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+.skin .copy .k{font-size:13px;font-weight:800;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:16px}
+.skin .copy h2{font-size:40px;font-weight:800;letter-spacing:-1px;line-height:1.18;margin-bottom:18px}
+.skin .copy p{font-size:16px;color:var(--graphite);line-height:1.8;margin-bottom:28px;max-width:460px}
+.skin .feat{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start}
+.skin .feat .fi{width:44px;height:44px;border-radius:12px;background:var(--green-l);display:grid;place-items:center;flex-shrink:0}
+.skin .feat .fi svg{width:22px;height:22px;stroke:var(--green-d);fill:none;stroke-width:1.8}
+.skin .feat b{font-size:15px;font-weight:800;display:block;margin-bottom:2px}
+.skin .feat span{font-size:13.5px;color:var(--muted);font-weight:700}
+.skin .panel{border-radius:24px;background:linear-gradient(150deg,#2f3a2b,#46604a);color:#fff;padding:44px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+.skin .panel .glow{position:absolute;right:-40px;top:-40px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(92,154,70,.6),transparent 70%)}
+.skin .panel .pin{position:relative;display:flex;align-items:center;gap:30px}
+.ring{position:relative;width:150px;height:150px;flex-shrink:0}
+.ring svg{transform:rotate(-90deg)}
+.ring .v{position:absolute;inset:0;display:grid;place-items:center;text-align:center}
+.ring .v b{font-size:44px;font-weight:800;line-height:1}
+.ring .v small{font-size:11px;color:rgba(255,255,255,.75);display:block;margin-top:4px}
+.mets{flex:1;display:flex;flex-direction:column;gap:14px}
+.met .ml{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;color:rgba(255,255,255,.9)}
+.met .bar{height:7px;border-radius:4px;background:rgba(255,255,255,.18);overflow:hidden}
+.met .bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#a9d693,#5C9A46);width:0;transition:width 1.3s ease}
+
+/* products */
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.prod{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;transition:.25s}
+.prod:hover{transform:translateY(-5px);box-shadow:var(--shadow-md);border-color:transparent}
+.prod .img{aspect-ratio:1;background:var(--paper);position:relative;display:grid;place-items:center;overflow:hidden}
+.prod .img img{width:100%;height:100%;object-fit:cover}
+.prod .img .ph{position:absolute;color:var(--silver);font-size:13px;font-weight:700}
+.prod .badge{position:absolute;top:12px;left:12px;z-index:2;font-size:11px;font-weight:800;background:var(--green);color:#fff;padding:6px 11px;border-radius:9px}
+.prod .body{padding:18px 18px 20px}
+.prod .cat{font-size:12px;color:var(--green-d);font-weight:800}
+.prod .nm{font-size:15px;font-weight:700;margin:7px 0 12px;line-height:1.45;height:44px;overflow:hidden}
+.prod .o{font-size:13px;color:var(--muted);text-decoration:line-through}
+.prod .p{font-size:20px;font-weight:800;margin-top:2px}
+.prod .p small{font-size:13px;color:var(--green-d);font-weight:800}
+
+/* tabs */
+.tabwrap{display:grid;grid-template-columns:.85fr 1.15fr;gap:46px;align-items:center}
+.tablist{display:flex;flex-direction:column;gap:10px}
+.tabbtn{text-align:left;background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;cursor:pointer;transition:.2s;font-family:var(--sans)}
+.tabbtn:hover{border-color:var(--green)}
+.tabbtn.on{background:var(--green);border-color:var(--green);color:#fff}
+.tabbtn .tk{font-size:12px;font-weight:800;letter-spacing:1px;opacity:.75;text-transform:uppercase}
+.tabbtn .tt{font-size:20px;font-weight:800;margin-top:4px}
+.tabview{border-radius:24px;overflow:hidden;border:1px solid var(--line);min-height:380px;display:flex;flex-direction:column}
+.tabview .vimg{height:230px;background:linear-gradient(135deg,var(--green-l),#cfe0bf);display:grid;place-items:center;color:var(--green-d);font-size:22px;font-weight:800}
+.tabview .vbody{padding:30px 34px}
+.tabview .vbody h3{font-size:26px;font-weight:800;margin-bottom:12px}
+.tabview .vbody p{font-size:15px;color:var(--graphite);line-height:1.8;max-width:560px;margin-bottom:20px}
+
+/* subscription band */
+.subband{border-radius:28px;overflow:hidden;background:linear-gradient(120deg,#5C9A46,#2f5a23);color:#fff;padding:60px;position:relative;text-align:center}
+.subband::after{content:"";position:absolute;right:-80px;bottom:-80px;width:320px;height:320px;border-radius:50%;background:rgba(255,255,255,.1)}
+.subband .k{font-size:13px;font-weight:800;letter-spacing:3px;color:#dcefce;text-transform:uppercase}
+.subband h2{font-size:40px;font-weight:800;margin:14px 0 14px;letter-spacing:-1px}
+.subband p{font-size:16px;color:rgba(255,255,255,.9);max-width:560px;margin:0 auto 26px}
+.subband .chips{display:flex;gap:10px;justify-content:center;margin-bottom:30px;flex-wrap:wrap;position:relative}
+.subband .chip{font-size:14px;font-weight:700;padding:11px 20px;border-radius:30px;border:1px solid rgba(255,255,255,.45);color:#fff}
+.subband .chip.on{background:#fff;color:var(--green-d);font-weight:800;border-color:#fff}
+
+/* news */
+.ngrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.ncard{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;transition:.25s;cursor:pointer}
+.ncard:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.ncard .nimg{height:200px;background:var(--paper);display:grid;place-items:center;color:var(--silver);overflow:hidden}
+.ncard .nimg img{width:100%;height:100%;object-fit:cover}
+.ncard .nbody{padding:24px}
+.ncard .ntag{font-size:11px;font-weight:800;color:var(--green-d);background:var(--green-l);padding:5px 11px;border-radius:7px}
+.ncard h3{font-size:17px;font-weight:800;line-height:1.5;margin:14px 0 14px;height:76px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
+.ncard .ndate{font-size:13px;color:var(--muted);font-weight:700}
+
+/* global cta */
+.glob{background:var(--charcoal);color:#fff;border-radius:28px;padding:56px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
+.glob h2{font-size:34px;font-weight:800;letter-spacing:-.5px;margin-bottom:10px}
+.glob p{font-size:15px;color:#a9aba6;font-weight:700}
+.glob .flags{font-size:34px;letter-spacing:6px}
+
+/* footer */
+footer{background:#222;color:#9a9c97;padding:64px 0 40px}
+.fcols{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid #3a3b36}
+.fcols .logo .word{color:#fff}
+.fcols .fabout{font-size:13px;line-height:1.9;margin-top:18px;color:#86887f}
+.fcol h4{font-size:13px;font-weight:800;color:#fff;letter-spacing:1px;margin-bottom:16px;text-transform:uppercase}
+.fcol a{display:block;font-size:13.5px;color:#9a9c97;padding:6px 0}
+.fcol a:hover{color:var(--green)}
+.fbottom{display:flex;justify-content:space-between;align-items:center;padding-top:26px;flex-wrap:wrap;gap:14px}
+.fbottom .copy{font-size:12.5px;color:#6f716a}
+.fbottom .badges{display:flex;gap:8px;flex-wrap:wrap}
+.fbottom .badges span{font-size:11px;font-weight:700;padding:6px 13px;border:1px solid #3a3b36;border-radius:20px;color:#9a9c97}
+
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:1080px){
+  .hero h1{font-size:44px}.sol-grid,.ngrid{grid-template-columns:1fr 1fr}
+  .pgrid{grid-template-columns:1fr 1fr}.skin,.tabwrap{grid-template-columns:1fr;gap:30px}
+  .stats .wrap{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .wrap{padding:0 20px}.menu,.topbar{display:none}.hero h1{font-size:34px}
+  .sol-grid,.ngrid,.pgrid,.stats .wrap{grid-template-columns:1fr}.fcols{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- top utility bar -->
+<div class="topbar"><div class="wrap">
+  <a href="#">비즈니스 센터</a><span class="sep"></span>
+  <a href="#">자주하는 질문</a><span class="sep"></span>
+  <a href="https://shopee.ph/mygameam.ph">SHOP</a><span class="sep"></span>
+  <a href="#">로그인</a><span class="sep"></span><a href="#">회원가입</a>
+</div></div>
+
+<!-- main nav -->
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#"><span class="mark"><i></i><i></i><i></i></span><span class="word">UNI<b>&</b>CORE</span></a>
+  <ul class="menu">
+    <li><a href="#">ABOUT</a><div class="submenu"><a href="#">Brand Story</a><a href="#">Philosophy</a><a href="#">History</a></div></li>
+    <li><a href="#sol">PRODUCTS</a><div class="submenu"><a href="#">Skincare</a><a href="#">Health Care</a><a href="#">Device</a><a href="#">Living</a><a href="#">Best Sellers</a></div></li>
+    <li><a href="#skin">AI ANALYSIS</a><div class="submenu"><a href="#skin">피부 분석</a><a href="#">건강 분석</a><a href="#">맞춤 추천</a></div></li>
+    <li><a href="#prod">SHOP</a><div class="submenu"><a href="#">전체 상품</a><a href="#">기획전·이벤트</a><a href="#">정기구독</a></div></li>
+    <li><a href="#news">COMMUNITY</a><div class="submenu"><a href="#">후기</a><a href="#">튜토리얼</a><a href="#news">News</a></div></li>
+  </ul>
+  <div class="nav-tools">
+    <div class="lang">KR ▾</div>
+    <div class="ic" title="검색"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg></div>
+    <div class="ic" title="장바구니"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6L5 3H2"/></svg></div>
+    <a class="btn btn-green" style="height:42px;padding:0 20px;font-size:13.5px" href="#">무료 시작</a>
+  </div>
+</div></header>
+
+<!-- hero -->
+<section class="hero">
+  <div class="vfallback"></div>
+  <video autoplay muted loop playsinline poster="https://superhero.co.kr/unincore/images/main/main_02.jpg">
+    <source src="https://superhero.co.kr/unincore/images/main/main_video_m.mp4" media="(max-width: 640px)" type="video/mp4" />
+    <source src="https://superhero.co.kr/unincore/images/main/main_video.mp4" type="video/mp4" />
+  </video>
+  <div class="scrim"></div>
+  <div class="wrap">
+    <div class="eyebrow"><span class="mark"><i></i><i></i><i></i></span> BEAUTY · DEVICE · HEALTH-CARE</div>
+    <h1>최고의 제형, 최적의 효능<br><em>스킨케어를 넘어선 변화</em></h1>
+    <p>AI 피부 분석부터 더마 디바이스, 헬스케어까지 — 자연과 첨단기술을 결합한 글로벌 No.1 뷰티·헬스케어 플랫폼.</p>
+    <div class="cta">
+      <button class="btn btn-green" onclick="alert('회원가입')">무료로 시작하기 →</button>
+      <button class="btn btn-line" onclick="alert('브랜드 필름')">▶ 브랜드 필름</button>
+    </div>
+  </div>
+  <div class="scrollcue">SCROLL<span></span></div>
+</section>
+
+<!-- stats -->
+<section class="stats"><div class="wrap">
+  <div class="stat"><div class="n">150<b>+</b></div><div class="l">제품 라인업</div></div>
+  <div class="stat"><div class="n"><b class="cnt" data-count="343886">0</b></div><div class="l">구독 회원</div></div>
+  <div class="stat"><div class="n"><b class="cnt" data-count="10762725">0</b></div><div class="l">누적 판매</div></div>
+  <div class="stat"><div class="n">50<b>+</b></div><div class="l">진출 국가</div></div>
+</div></section>
+
+<!-- solutions -->
+<section class="section" id="sol"><div class="wrap">
+  <div class="shead reveal"><div class="k">Total Solution</div><h2>3대 핵심 솔루션</h2><p>안과 밖, 디바이스까지 — 토탈 뷰티·헬스케어</p></div>
+  <div class="sol-grid">
+    <div class="sol beauty reveal"><div class="bg"></div><div class="scrim"></div><div class="c"><div class="k">Beauty Solution</div><h3>뷰티 솔루션</h3><p>최고의 제형과 최적의 효능으로 완성하는 스킨케어를 넘어선 변화.</p><a class="go" href="#">자세히 보기 →</a></div></div>
+    <div class="sol device reveal"><div class="bg"></div><div class="scrim"></div><div class="c"><div class="k">Device Solution</div><h3>디바이스 솔루션</h3><p>더마 디바이스로 완성하는 프리미엄 홈 뷰티 케어.</p><a class="go" href="#">자세히 보기 →</a></div></div>
+    <div class="sol health reveal"><div class="bg"></div><div class="scrim"></div><div class="c"><div class="k">Health-care Solution</div><h3>헬스케어 솔루션</h3><p>안에서부터 건강하게, 매일을 채우는 이너뷰티 헬스케어.</p><a class="go" href="#">자세히 보기 →</a></div></div>
+  </div>
+</div></section>
+
+<!-- AI skin -->
+<section class="section alt" id="skin"><div class="wrap">
+  <div class="skin">
+    <div class="copy reveal">
+      <div class="k">AI Skin Analysis</div>
+      <h2>셀카 한 장으로<br>완성하는 피부 리포트</h2>
+      <p>AI Vision이 모공·주름·색소·수분을 분석해 피부 나이와 점수를 산출하고, 맞춤 화장품·건강기능식품·시술을 추천합니다.</p>
+      <div class="feat"><div class="fi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M4 8V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v2M20 16v2a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-2"/></svg></div><div><b>셀카 업로드 분석</b><span>10초 내 실시간 AI 피부 진단</span></div></div>
+      <div class="feat"><div class="fi"><svg viewBox="0 0 24 24"><path d="M4 19V5M4 19h16M8 16v-5M12 16V8M16 16v-7"/></svg></div><div><b>피부 점수 리포트 PDF</b><span>항목별 점수와 변화 추이 제공</span></div></div>
+      <div class="feat"><div class="fi"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7z"/><path d="M9 7a3 3 0 016 0"/></svg></div><div><b>맞춤 제품 추천</b><span>피부 타입별 화장품·헬스케어 매칭</span></div></div>
+      <button class="btn btn-green" style="margin-top:20px" onclick="alert('셀카 업로드')">셀카로 분석 시작 →</button>
+    </div>
+    <div class="panel reveal">
+      <div class="glow"></div>
+      <div class="pin">
+        <div class="ring">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="66" stroke="rgba(255,255,255,.15)" stroke-width="10" fill="none"/>
+            <circle id="ring" cx="75" cy="75" r="66" stroke="url(#g1)" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="415" stroke-dashoffset="415"/>
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a9d693"/><stop offset="1" stop-color="#5C9A46"/></linearGradient></defs>
+          </svg>
+          <div class="v"><div><b id="sc">0</b><small>SKIN SCORE</small></div></div>
+        </div>
+        <div class="mets">
+          <div class="met"><div class="ml"><span>수분</span><span>82%</span></div><div class="bar"><i data-w="82"></i></div></div>
+          <div class="met"><div class="ml"><span>모공</span><span>68%</span></div><div class="bar"><i data-w="68"></i></div></div>
+          <div class="met"><div class="ml"><span>주름</span><span>75%</span></div><div class="bar"><i data-w="75"></i></div></div>
+          <div class="met"><div class="ml"><span>색소</span><span>71%</span></div><div class="bar"><i data-w="71"></i></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- products -->
+<section class="section" id="prod"><div class="wrap">
+  <div class="shead reveal"><div class="k">UNI&CORE Product</div><h2>인기 제품</h2><p>유니앤코어가 엄선한 베스트셀러</p></div>
+  <div class="pgrid" id="pgrid"></div>
+  <div style="text-align:center;margin-top:46px"><button class="btn btn-dark" onclick="alert('전체 상품')">전체 상품 보기 →</button></div>
+</div></section>
+
+<!-- category tabs -->
+<section class="section alt"><div class="wrap">
+  <div class="shead reveal"><div class="k">Category</div><h2>당신만을 위한 뷰티 솔루션</h2></div>
+  <div class="tabwrap">
+    <div class="tablist" id="tablist"></div>
+    <div class="tabview" id="tabview"></div>
+  </div>
+</div></section>
+
+<!-- subscription -->
+<section class="section"><div class="wrap">
+  <div class="subband reveal">
+    <div class="k">Subscription</div>
+    <h2>매월 받아보는 정기구독</h2>
+    <p>엄선된 제품을 매월 편리하게. 자동결제 · 추가 할인 · 포인트 적립 · 무료배송 혜택을 한 번에.</p>
+    <div class="chips"><span class="chip">1개월</span><span class="chip on">3개월 −15%</span><span class="chip">6개월</span><span class="chip">12개월 −25%</span></div>
+    <button class="btn" style="background:#fff;color:var(--green-d);height:54px;padding:0 34px;border-radius:14px" onclick="alert('구독 시작')">구독 시작하기 →</button>
+  </div>
+</div></section>
+
+<!-- news -->
+<section class="section alt" id="news"><div class="wrap">
+  <div class="shead reveal"><div class="k">News Release</div><h2>유니앤코어 소식</h2></div>
+  <div class="ngrid" id="ngrid"></div>
+</div></section>
+
+<!-- global -->
+<section class="section"><div class="wrap">
+  <div class="glob reveal">
+    <div><h2>Global Commerce</h2><p>50개국 진출 · 다국어 · 다중통화 · 국가별 배송</p></div>
+    <div class="flags">🇰🇷 🇯🇵 🇺🇸 🇵🇭 🇹🇭 🇻🇳 🇲🇾 🇮🇩</div>
+  </div>
+</div></section>
+
+<!-- footer -->
+<footer><div class="wrap">
+  <div class="fcols">
+    <div>
+      <a class="logo" href="#"><span class="mark"><i></i><i></i><i></i></span><span class="word">UNI<b>&</b>CORE</span></a>
+      <div class="fabout">주식회사 유니앤코어 · 대표 김성현<br>서울특별시 서초구 양재대로2길 100-30 2층 (우면동)<br>사업자등록번호 227-81-24703 · 통신판매업신고 제2023-서울서초-0026호<br>TEL 1551-7970 · FAX 02-571-0122 · unincore@unincore.com</div>
+    </div>
+    <div class="fcol"><h4>Product</h4><a href="#">Skincare</a><a href="#">Health Care</a><a href="#">Device</a><a href="#">Living</a><a href="#">Lounge Items</a></div>
+    <div class="fcol"><h4>Support</h4><a href="#">비즈니스 센터</a><a href="#">자주하는 질문</a><a href="#">1:1 문의</a><a href="#">배송·반품</a></div>
+    <div class="fcol"><h4>Policies</h4><a href="#">개인정보처리방침</a><a href="#">이용약관</a><a href="#">보증서조회</a><a href="#">판매원조회</a></div>
+  </div>
+  <div class="fbottom">
+    <div class="copy">© 2025 UNI&CORE SEA. All rights reserved.</div>
+    <div class="badges"><span>PWA</span><span>iOS · Android</span><span>6개 언어</span><span>ESG 경영</span></div>
+  </div>
+</div></footer>
+
+<script>
+const BASE='https://superhero.co.kr/unincore/images/main/';
+const prods=[
+  {img:'product01.png',cat:'스킨케어',nm:'비타씨 13.5 수퍼 화이트닝 앰플 30g',o:'176,300',p:'90,000'},
+  {img:'product02.png',cat:'헬스케어',nm:'데일리 메가 에너자이저 플러스 30포',o:'176,300',p:'90,000'},
+  {img:'product03.png',cat:'스킨케어',nm:'이뮨 메가 부스터 AHCC',o:'176,300',p:'90,000'},
+  {img:'product04.png',cat:'스킨케어',nm:'비타씨 13.5 수퍼 화이트닝 앰플 30g',o:'176,300',p:'90,000'},
+];
+document.getElementById('pgrid').innerHTML=prods.map(d=>`
+  <div class="prod"><div class="img"><span class="badge">회원가</span><span class="ph">${d.nm.slice(0,9)}</span>
+    <img src="${BASE}${d.img}" alt="${d.nm}" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+    <div class="body"><div class="cat">${d.cat}</div><div class="nm">${d.nm}</div>
+      <div class="o">${d.o}원</div><div class="p">${d.p}<small> 원</small></div></div></div>`).join('');
+
+const tabs=[
+  {k:'Skin Care',t:'스킨케어',d:'피부를 더 건강하고 빛나게. 첨단 기술과 자연의 힘을 결합한 맞춤 스킨케어로 나만의 뷰티 솔루션을 완성하세요.'},
+  {k:'Health Care',t:'헬스케어',d:'안에서부터 시작되는 아름다움. 매일을 채우는 이너뷰티 헬스케어로 건강한 라이프스타일을 만들어보세요.'},
+  {k:'Living',t:'리빙',d:'일상을 더 건강하고 풍요롭게 만드는 라이프스타일 제품을 만나보세요.'},
+  {k:'Package',t:'패키지',d:'엄선된 구성으로 만나는 합리적인 패키지. 필요한 제품을 한 번에 똑똑하게.'},
+  {k:'Lounge Items',t:'라운지 아이템',d:'UNI&CORE 라운지에서만 만나는 프리미엄 전용 아이템을 경험하세요.'},
+];
+const tl=document.getElementById('tablist'),tv=document.getElementById('tabview');
+tl.innerHTML=tabs.map((t,i)=>`<button class="tabbtn ${i===0?'on':''}" data-i="${i}"><div class="tk">${t.k}</div><div class="tt">${t.t}</div></button>`).join('');
+function renderTab(i){const t=tabs[i];tv.innerHTML=`<div class="vimg">${t.t}</div><div class="vbody"><h3>${t.t}</h3><p>${t.d}</p><button class="btn btn-dark" onclick="alert('${t.t} 이동')">바로가기 →</button></div>`;}
+tl.querySelectorAll('.tabbtn').forEach(b=>b.onclick=()=>{tl.querySelectorAll('.tabbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderTab(+b.dataset.i);});
+renderTab(0);
+
+const news=[
+  {img:'news01.jpg',t:'"상금도 타고 자신감도 업됐어요!" 유니앤코어 더블 S 챌린지 2차 대회 성료',d:'2025.04.30'},
+  {img:'news02.jpg',t:'유니앤코어, 역대급 상금 더블 S 챌린지 1차 대회 성료',d:'2025.04.30'},
+  {img:'news03.jpg',t:'김성현 (주)유니앤코어 대표이사, 국회 산업통상자원중소벤처기업위원장 표창 수상',d:'2025.04.30'},
+];
+document.getElementById('ngrid').innerHTML=news.map(n=>`
+  <div class="ncard"><div class="nimg"><img src="${BASE}${n.img}" alt="" onerror="this.parentElement.textContent='보도자료'"></div>
+    <div class="nbody"><span class="ntag">보도자료</span><h3>${n.t}</h3><div class="ndate">${n.d}</div></div></div>`).join('');
+
+/* reveal + counters */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+let counted=false;
+const statObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!counted){counted=true;
+  document.querySelectorAll('.cnt').forEach(el=>{const tg=+el.dataset.count;let c=0,s=tg/70;
+    const t=setInterval(()=>{c+=s;if(c>=tg){c=tg;clearInterval(t);}el.textContent=Math.floor(c).toLocaleString('ko-KR');},20);});
+  runSkin();}}),{threshold:.3});
+statObs.observe(document.querySelector('.stats'));
+let skinDone=false;
+function runSkin(){if(skinDone)return;skinDone=true;
+  const ring=document.getElementById('ring'),sc=document.getElementById('sc'),val=87;
+  setTimeout(()=>{ring.style.transition='stroke-dashoffset 1.4s ease';ring.style.strokeDashoffset=415-(415*val/100);},200);
+  let c=0;const t=setInterval(()=>{c++;sc.textContent=c;if(c>=val)clearInterval(t);},14);
+  document.querySelectorAll('.met .bar i').forEach(i=>setTimeout(()=>i.style.width=i.dataset.w+'%',250));
+}
+const skinObs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)runSkin();}),{threshold:.3});
+skinObs.observe(document.getElementById('skin'));
+</script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="description" content="UNI&CORE Skin Quiz — answer 5 questions to get products matched to your skin type and concerns." />
+<title>Skin Quiz — UNI&CORE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="ai">
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+<section class="page-hero">
+  <div class="bg" style="background-image:url('https://superhero.co.kr/unincore/images/main/main_03.jpg')"></div>
+  <div class="wrap"><div class="crumb"><a href="index.html">HOME</a> › AI ANALYSIS › Skin Quiz</div><h1>Skin Quiz</h1><p>Answer 5 questions and we'll recommend products matched to your skin type and concerns.</p></div>
+</section>
+
+<section class="section"><div class="wrap">
+  <div class="quiz">
+    <div class="qcard" id="qcard"></div>
+  </div>
+</div></section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/app.js"></script>
+<script>
+const Q=[
+  {q:'What is your skin type?',o:[['Dry','dry'],['Oily','oily'],['Combination','combo'],['Sensitive','sensitive']]},
+  {q:'Your biggest skin concern?',o:[['Dullness · pigmentation','bright'],['Dryness · lack of moisture','hydrate'],['Pores · breakouts','pore'],['Elasticity · wrinkles','firm']]},
+  {q:'Your health interest?',o:[['Energy · vitality','energy'],['Inner beauty · collagen','collagen'],['Gut health · slimming','gut'],['Not interested','none']]},
+  {q:'Preferred routine?',o:[['Simple & minimal','minimal'],['Rich multi-step','rich'],['Inner + outer combined','both'],["Doesn't matter",'any']]},
+  {q:'Your buying priority?',o:[['Proven bestsellers','best'],['Value for money','value'],['Premium intensive care','premium'],['New products','new']]}
+];
+let step=0;const ans=[];
+const card=document.getElementById('qcard');
+function render(){
+  if(step<Q.length){const item=Q[step];
+    card.innerHTML=`<div class="qprog"><i style="width:${(step/Q.length)*100}%"></i></div>
+      <div class="qstep">STEP ${step+1} / ${Q.length}</div><h2>${item.q}</h2>
+      <div class="qopts">${item.o.map((o,i)=>`<button class="qopt" data-v="${o[1]}">${o[0]}</button>`).join('')}</div>`;
+    card.querySelectorAll('.qopt').forEach(b=>b.onclick=()=>{ans.push(b.dataset.v);step++;render();});
+  } else { result(); }
+}
+function result(){
+  const wantHealth = ans.includes('energy')||ans.includes('collagen')||ans.includes('gut');
+  const cat = wantHealth ? 'Healthcare' : 'Skincare';
+  let picks = UNICORE.PRODUCTS.filter(p=>p.cat===cat);
+  picks.sort((a,b)=> (b.live?1:0)-(a.live?1:0));
+  picks = picks.slice(0,4);
+  card.innerHTML=`<div class="qprog"><i style="width:100%"></i></div>
+    <div class="qstep">RESULT</div><h2>Your recommendation</h2>
+    <p style="font-size:15px;color:#54585A;line-height:1.8;margin-bottom:8px">Based on your answers, we recommend a <b style="color:#467A35">${cat==='Healthcare'?'healthcare-focused':'skincare-focused'}</b> routine.</p>
+    <p style="font-size:13px;color:#8C8F8C;margin-bottom:24px;font-weight:700">For a more precise diagnosis, try the AI Skin Analysis.</p>
+    <div class="pgrid" id="qreco"></div>
+    <div style="display:flex;gap:12px;margin-top:26px;flex-wrap:wrap">
+      <a class="btn btn-green" href="ai-analysis.html">Precise AI analysis →</a>
+      <button class="btn btn-outline" onclick="restart()">Retake quiz</button>
+    </div>`;
+  const host=document.getElementById('qreco');
+  host.innerHTML=picks.map(x=>{
+    const pb=`<div class="p">${UNICORE.peso(x.php)} <small>${x.live?'Shopee':'Member'}</small></div>`;
+    const bd=x.live?`<span class="badge">On Shopee</span>`:`<span class="badge soon">New</span>`;
+    return `<a class="prod" href="product-detail.html?id=${x.id}"><div class="img">${bd}<span class="ph">${x.name.slice(0,16)}</span>
+      <img src="${UNICORE.PIMG}${x.img}" alt="${x.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+      <div class="body"><div class="cat">${x.cat}</div><div class="nm">${x.name}</div>${pb}</div></a>`;}).join('');
+}
+window.restart=function(){step=0;ans.length=0;render();};
+render();
+</script>
+</body>
+</html>

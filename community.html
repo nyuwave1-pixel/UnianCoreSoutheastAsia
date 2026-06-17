@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="description" content="UNI&CORE Community — press releases, customer reviews and beauty tips. Write reviews and earn points." />
+<title>COMMUNITY · News & Reviews — UNI&CORE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="community">
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+<section class="page-hero">
+  <div class="bg" style="background-image:url('https://superhero.co.kr/unincore/images/main/tab_living.jpg')"></div>
+  <div class="wrap">
+    <div class="crumb"><a href="index.html">HOME</a> › COMMUNITY</div>
+    <h1>Community</h1>
+    <p>UNI&CORE news, customer reviews and beauty know-how in one place. Write a review and earn points.</p>
+  </div>
+</section>
+
+<!-- News -->
+<section class="section" id="news"><div class="wrap">
+  <div class="shead reveal"><div class="k">News Release</div><h2>Press Releases</h2></div>
+  <div class="ngrid" id="ngrid"></div>
+</div></section>
+
+<!-- Reviews -->
+<section class="section alt" id="reviews"><div class="wrap">
+  <div class="shead reveal"><div class="k">Customer Reviews</div><h2>Customer Reviews</h2><p>Earn points when you post a review</p></div>
+  <div class="board">
+    <div class="post reveal"><div class="av">M</div><div class="pc"><div class="ph"><b>Mika</b><span class="tagk">Skin improvement</span></div><div class="txt">Review after 4 weeks with the Vita C 13.5 Ampoule! My pore score went from 58 to 72 — so satisfying. Attaching the AI report comparison too.</div><div class="pm"><span>♡ 1,204</span><span>💬 86</span><span>+50P</span></div></div></div>
+    <div class="post reveal"><div class="av">J</div><div class="pc"><div class="ph"><b>John</b><span class="tagk">Healthcare</span></div><div class="txt">After a month on Daily Mega Energizer Plus my morning condition really changed. I keep receiving it via subscription now!</div><div class="pm"><span>♡ 932</span><span>💬 41</span><span>+50P</span></div></div></div>
+    <div class="post reveal"><div class="av">S</div><div class="pc"><div class="ph"><b>Sofia</b><span class="tagk">Skincare</span></div><div class="txt">The Deep Hydrating Cream has amazing moisture. Highly recommended for dry, transitional weather, and the scent is subtle.</div><div class="pm"><span>♡ 641</span><span>💬 28</span><span>+50P</span></div></div></div>
+  </div>
+</div></section>
+
+<!-- Tips -->
+<section class="section" id="tips"><div class="wrap">
+  <div class="shead reveal"><div class="k">Beauty Tips</div><h2>Beauty Know-how</h2></div>
+  <div class="vgrid">
+    <div class="vcard reveal"><div class="vi"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M4 8V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v2M20 16v2a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-2"/></svg></div><h3>Get the most from AI analysis</h3><p>Shoot regularly under the same lighting and angle to compare your progress more accurately.</p></div>
+    <div class="vcard reveal"><div class="vi"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18"/></svg></div><h3>Ampoule & cream layering</h3><p>Apply in order: toner → ampoule → serum mist → cream to boost absorption.</p></div>
+    <div class="vcard reveal"><div class="vi"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 00-7 7c0 3 2 5 2 7h10c0-2 2-4 2-7a7 7 0 00-7-7zM9 21h6"/></svg></div><h3>Inner-beauty routine</h3><p>Take collagen jelly and probiotics consistently to care for yourself from within.</p></div>
+  </div>
+</div></section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/app.js"></script>
+<script>
+const NB='https://superhero.co.kr/unincore/images/main/';
+const news=[
+  {img:'news01.jpg',t:'UNI&CORE "Double S Challenge" 2nd round concludes successfully',d:'2025.04.30'},
+  {img:'news02.jpg',t:'UNI&CORE wraps up the record-prize "Double S Challenge" 1st round',d:'2025.04.30'},
+  {img:'news03.jpg',t:'CEO Kim Sung-hyun receives commendation from the National Assembly committee',d:'2025.04.30'},
+];
+document.getElementById('ngrid').innerHTML=news.map(n=>`
+  <article class="ncard"><div class="nimg"><img src="${NB}${n.img}" alt="" loading="lazy" onerror="this.parentElement.textContent='Press'"></div>
+    <div class="nbody"><span class="ntag">Press</span><h3>${n.t}</h3><div class="ndate">${n.d}</div></article>`).join('');
+</script>
+</body>
+</html>
