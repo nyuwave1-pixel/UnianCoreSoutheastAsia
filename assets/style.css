@@ -541,6 +541,7 @@ a,button,input,textarea,select{outline-offset:3px}
 /* brand tagline (from HQ: "United power of uni&core to the global") */
 .brandline{font-size:clamp(11px,1vw,13px);font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--green);opacity:.95}
 .hero .brandline{color:#bfe0ad;margin-bottom:14px;animation:heroIn .85s 0s both}
+.page-hero .brandline{color:#bfe0ad;margin-bottom:12px}
 
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
