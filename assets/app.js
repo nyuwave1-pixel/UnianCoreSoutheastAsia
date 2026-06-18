@@ -88,6 +88,7 @@
     <div class="fcols">
       <div>
         <span class="logo"><img class="logo-img" src="https://superhero.co.kr/unincore/images/common/logo_w.png" alt="UNI&CORE SEA" style="height:54px"></span>
+        <div class="ftagline">United power of uni&core to the global</div>
         <div class="fabout">Uni&Core, USA, INC<br>333 City Blvd West Suite #850, Orange, CA 92868<br>TEL 714-363-3342 · unincoreusa@unincore.com</div>
       </div>
       <div class="fcol"><h4>Shop</h4><a href="products.html#skincare">Skincare</a><a href="products.html#healthcare">Healthcare</a><a href="derma.html">Derma Series</a><a href="products.html#package">Packages</a><a href="${SHOPEE}" target="_blank" rel="noopener">Shopee Store</a></div>
