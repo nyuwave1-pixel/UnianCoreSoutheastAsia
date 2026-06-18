@@ -619,6 +619,41 @@ a,button,input,textarea,select{outline-offset:3px}
 .tt-shop a:hover{background:#fff;color:#161823}
 @media(max-width:560px){.tt-reel{grid-template-columns:1fr 1fr}.tt-sub{width:100%;justify-content:center}}
 
+/* TikTok lightbox player */
+.tt-modal{position:fixed;inset:0;z-index:1100;display:none;align-items:center;justify-content:center;background:rgba(10,12,10,.84);backdrop-filter:blur(7px);padding:20px}
+.tt-modal.open{display:flex;animation:ttFade .22s ease}
+@keyframes ttFade{from{opacity:0}to{opacity:1}}
+.tt-modal-box{position:relative;width:min(340px,94vw);height:min(720px,88vh);background:#000;border-radius:18px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.tt-modal-box iframe{width:100%;height:100%;border:0;display:block}
+.tt-modal-load{position:absolute;inset:0;display:grid;place-items:center;color:#aaa;font-size:13px;font-weight:700;background:#000}
+.tt-modal-x{position:absolute;top:10px;right:10px;z-index:3;width:36px;height:36px;border:none;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:16px;cursor:pointer;display:grid;place-items:center;backdrop-filter:blur(4px)}
+.tt-modal-x:hover{background:#FE2C55}
+.tt-modal-ext{position:absolute;bottom:0;left:0;right:0;z-index:3;text-align:center;padding:11px;font-size:12.5px;font-weight:800;color:#fff;background:linear-gradient(0deg,rgba(0,0,0,.7),transparent)}
+.tt-clip{cursor:pointer}
+
+/* ============================================================
+   DESIGN UPGRADE v7 — Global Launch (anticipation marketing band)
+   ============================================================ */
+.launch{position:relative;background:linear-gradient(135deg,#0e120e,#1c241c 55%,#0a0d0a);overflow:hidden}
+.launch::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:780px;height:780px;border-radius:50%;background:radial-gradient(circle,rgba(201,168,106,.18),transparent 62%);pointer-events:none}
+.launch::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(125deg,rgba(255,255,255,.02) 0 2px,transparent 2px 26px);pointer-events:none}
+.launch .wrap{position:relative;padding:clamp(72px,10vw,132px) 40px;text-align:center}
+.launch-in{max-width:840px;margin:0 auto}
+.launch .lk{display:inline-flex;align-items:center;gap:9px;font-size:13px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:#D8B877;margin-bottom:24px}
+.launch .lk::before,.launch .lk::after{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,#C9A86A)}
+.launch .lk::after{background:linear-gradient(90deg,#C9A86A,transparent)}
+.launch h2{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5vw,58px);line-height:1.1;color:#fff;letter-spacing:-1px;margin:0}
+.launch h2 em{font-style:italic;background:linear-gradient(120deg,#E6C886,#C9A86A);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.launch p{color:rgba(255,255,255,.82);font-size:clamp(15px,1.5vw,18px);line-height:1.85;margin:24px auto 0;max-width:62ch}
+.launch-stats{display:flex;justify-content:center;gap:clamp(26px,5vw,66px);margin:42px 0 38px;flex-wrap:wrap}
+.launch-stats b{font-family:var(--serif);font-weight:600;font-size:clamp(30px,4vw,46px);color:#D8B877;display:block;line-height:1}
+.launch-stats span{font-size:12.5px;color:rgba(255,255,255,.68);font-weight:700;margin-top:8px;display:block;letter-spacing:.3px}
+.launch-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-gold{background:linear-gradient(135deg,#E6C886,#C9A86A);color:#1c241c;height:56px;padding:0 34px;border-radius:14px;font-size:15px;font-weight:800;box-shadow:0 14px 32px rgba(201,168,106,.34)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 18px 40px rgba(201,168,106,.46)}
+.btn-ghost{background:transparent;color:#fff;height:56px;padding:0 28px;border-radius:14px;border:1px solid rgba(255,255,255,.42);font-size:15px;font-weight:800}
+.btn-ghost:hover{background:rgba(255,255,255,.1);border-color:#fff}
+
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
 .newbeg .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding-top:clamp(70px,9vw,120px);padding-bottom:clamp(70px,9vw,120px)}

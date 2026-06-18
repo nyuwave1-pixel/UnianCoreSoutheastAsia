@@ -111,6 +111,39 @@
       drawer.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>{drawer.classList.remove('open');hamb.setAttribute('aria-expanded','false');}));}
     paintBadge();
     mountChatbot();
+    initTikTokPlayer();
+  }
+
+  /* ---------- TikTok in-page video player (lightbox) ---------- */
+  function initTikTokPlayer(){
+    if(document.getElementById('ttModal')) return;
+    const m=document.createElement('div');
+    m.id='ttModal'; m.className='tt-modal';
+    m.innerHTML=`
+      <div class="tt-modal-box" role="dialog" aria-label="TikTok video">
+        <button class="tt-modal-x" type="button" aria-label="Close">&#10005;</button>
+        <div class="tt-modal-load">Loading video…</div>
+        <iframe title="UNI&CORE TikTok video" allow="autoplay; encrypted-media; fullscreen" scrolling="no"></iframe>
+        <a class="tt-modal-ext" target="_blank" rel="noopener">Open on TikTok ↗</a>
+      </div>`;
+    document.body.appendChild(m);
+    const frame=m.querySelector('iframe'), loadEl=m.querySelector('.tt-modal-load'), ext=m.querySelector('.tt-modal-ext');
+    function open(id,url){
+      loadEl.style.display='grid';
+      frame.addEventListener('load',()=>{loadEl.style.display='none';},{once:true});
+      frame.src='https://www.tiktok.com/embed/v2/'+id;
+      ext.href=url;
+      m.classList.add('open'); document.body.style.overflow='hidden';
+    }
+    function close(){ m.classList.remove('open'); frame.src=''; document.body.style.overflow=''; }
+    m.querySelector('.tt-modal-x').addEventListener('click',close);
+    m.addEventListener('click',e=>{ if(e.target===m) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&m.classList.contains('open')) close(); });
+    document.addEventListener('click',e=>{
+      const clip=e.target.closest('.tt-clip'); if(!clip) return;
+      const href=clip.getAttribute('href')||''; const mt=href.match(/\/video\/(\d+)/);
+      if(mt){ e.preventDefault(); open(mt[1],href); }
+    });
   }
 
   /* ---------- site-wide AI chatbot widget ---------- */
