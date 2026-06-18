@@ -106,15 +106,24 @@
     <div class="lk">Global Launch · Coming Soon</div>
     <h2>The world is ready for K-Beauty.<br><em>And we're ready for the world.</em></h2>
     <p>UNI&CORE is preparing its worldwide launch across Southeast Asia and beyond — engineered with obsession for your skin and an uncompromising devotion to every customer. This isn't just a launch. It's a new global standard in beauty &amp; healthcare.</p>
+    <div class="cd-label">Global premiere begins in</div>
+    <div class="cd" id="cd" data-target="2026-09-01T00:00:00">
+      <div class="cd-i"><b data-d>00</b><span>Days</span></div>
+      <div class="cd-i"><b data-h>00</b><span>Hours</span></div>
+      <div class="cd-i"><b data-m>00</b><span>Minutes</span></div>
+      <div class="cd-i"><b data-s>00</b><span>Seconds</span></div>
+    </div>
     <div class="launch-stats">
       <div><b>50+</b><span>Countries rolling out</span></div>
       <div><b>10M+</b><span>Products already loved</span></div>
       <div><b>2026</b><span>Global premiere</span></div>
     </div>
-    <div class="launch-cta">
-      <a class="btn btn-gold" href="subscription.html">Join the Waitlist →</a>
-      <a class="btn btn-ghost" href="community.html#tiktok">Follow the journey</a>
-    </div>
+    <form class="wl" id="wlForm" novalidate>
+      <input type="email" id="wlEmail" placeholder="Enter your email for early access" autocomplete="email" required>
+      <button type="submit" class="btn btn-gold">Notify me →</button>
+    </form>
+    <div class="wl-note" id="wlNote">Be the first to know — exclusive early access &amp; launch-day perks. No spam, ever.</div>
+    <a class="wl-follow" href="community.html#tiktok">or follow the journey on TikTok →</a>
   </div>
 </div></section>
 
@@ -278,6 +287,36 @@ function runSkin(){if(done)return;done=true;
   let c=0;const t=setInterval(()=>{c++;sc.textContent=c;if(c>=val)clearInterval(t);},14);
   document.querySelectorAll('.met .bar i').forEach(i=>setTimeout(()=>i.style.width=i.dataset.w+'%',250));
 }
+
+/* ===== Global launch countdown + waitlist ===== */
+(function(){
+  var cd=document.getElementById('cd');
+  if(cd){
+    var target=new Date(cd.dataset.target).getTime();
+    var dD=cd.querySelector('[data-d]'),dH=cd.querySelector('[data-h]'),dM=cd.querySelector('[data-m]'),dS=cd.querySelector('[data-s]');
+    function p(n){return String(n).padStart(2,'0');}
+    function tick(){
+      var d=target-Date.now(); if(d<0)d=0;
+      dD.textContent=p(Math.floor(d/864e5));
+      dH.textContent=p(Math.floor(d%864e5/36e5));
+      dM.textContent=p(Math.floor(d%36e5/6e4));
+      dS.textContent=p(Math.floor(d%6e4/1e3));
+    }
+    tick(); setInterval(tick,1000);
+  }
+  var f=document.getElementById('wlForm');
+  if(f){
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var em=(document.getElementById('wlEmail').value||'').trim();
+      var note=document.getElementById('wlNote');
+      if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ note.textContent='Please enter a valid email address.'; note.style.color='#ffb4b4'; return; }
+      try{ var list=JSON.parse(localStorage.getItem('uc_waitlist')||'[]'); list.push({e:em,t:Date.now()}); localStorage.setItem('uc_waitlist',JSON.stringify(list)); }catch(_){}
+      f.style.display='none';
+      note.innerHTML='✨ You’re on the list! We’ll notify you the moment we launch.'; note.style.color='#bfe0ad';
+    });
+  }
+})();
 </script>
 </body>
 </html>
