@@ -59,7 +59,7 @@
       <li data-nav="products"><a href="products.html">SHOP</a><div class="submenu"><a href="products.html#skincare">Skincare</a><a href="products.html#healthcare">Healthcare</a><a href="products.html#living">Living</a><a href="products.html#package">Packages</a></div></li>
       <li data-nav="derma"><a href="derma.html">DERMA</a><div class="submenu"><a href="derma-home.html">Derma Home</a><a href="derma-10.html">Derma 10</a><a href="derma-10-pro.html">Derma 10 Pro</a><a href="derma-hand.html">Derma Hand Hybrid</a></div></li>
       <li data-nav="ai"><a href="ai-analysis.html">AI ANALYSIS</a><div class="submenu"><a href="ai-analysis.html">Skin Analysis</a><a href="skin-quiz.html">Skin Quiz</a><a href="ai-analysis.html#recommend">Recommendations</a></div></li>
-      <li data-nav="sub"><a href="index.html#subscription">SUBSCRIPTION</a></li>
+      <li data-nav="sub"><a href="subscription.html">SUBSCRIPTION</a><div class="submenu"><a href="subscription.html">Plans & Benefits</a><a href="rewards.html">Rewards</a><a href="subscription.html#faq">FAQ</a></div></li>
       <li data-nav="about"><a href="about.html">STORY</a><div class="submenu"><a href="about.html#about">About us</a><a href="about.html#brand">Brand Story</a><a href="about.html#history">History</a><a href="about.html#business">Business</a></div></li>
       <li data-nav="community"><a href="community.html">COMMUNITY</a><div class="submenu"><a href="community.html#news">News</a><a href="community.html#reviews">Reviews</a><a href="community.html#tips">Beauty Tips</a></div></li>
       <li data-nav="support"><a href="support.html">SUPPORT</a><div class="submenu"><a href="support.html#faq">FAQ</a><a href="support.html#contact">Contact</a><a href="support.html#shipping">Shipping</a></div></li>
@@ -77,7 +77,7 @@
       <div class="dhead"><span class="logo"><img class="logo-img" src="https://superhero.co.kr/unincore/images/common/logo.png" alt="UNI&CORE SEA" style="height:42px"></span><button class="close" data-close aria-label="Close">×</button></div>
       <nav class="dnav">
         <a href="products.html">SHOP</a><a href="derma.html">DERMA SERIES</a><a href="ai-analysis.html">AI ANALYSIS</a><a href="skin-quiz.html">Skin Quiz</a>
-        <a href="index.html#subscription">SUBSCRIPTION</a><a href="about.html">STORY</a><a href="community.html">COMMUNITY</a>
+        <a href="subscription.html">SUBSCRIPTION</a><a href="rewards.html">Rewards</a><a href="about.html">STORY</a><a href="community.html">COMMUNITY</a>
         <a href="support.html">SUPPORT</a><a href="cart.html">Cart</a><a class="sub" href="#">Login · Sign up</a>
       </nav>
     </div>
@@ -132,8 +132,13 @@
 
   /* ---------- interactions ---------- */
   function initFX(){
-    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
-    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+    const rev=document.querySelectorAll('.reveal');
+    if('IntersectionObserver' in window){
+      const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:0,rootMargin:'0px 0px -8% 0px'});
+      rev.forEach(el=>io.observe(el));
+    } else { rev.forEach(el=>el.classList.add('in')); }
+    // safety: never leave content invisible if observer/JS stalls
+    setTimeout(()=>rev.forEach(el=>el.classList.add('in')),2500);
     let counted=false;const cs=document.querySelector('[data-counters]');
     if(cs){const co=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting&&!counted){counted=true;
       document.querySelectorAll('.cnt').forEach(el=>{const tg=+el.dataset.count;let c=0,s=tg/70;
@@ -146,6 +151,16 @@
     if(fl){fl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
       fl.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
       renderProducts('#catalog',{cat:b.dataset.cat});});}
+    // subtle scroll parallax (sub-page banner backgrounds)
+    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const pxEls=[].slice.call(document.querySelectorAll('.page-hero .bg'));
+    if(pxEls.length && !reduce){
+      pxEls.forEach(el=>{el.setAttribute('data-parallax','');el.style.transform='scale(1.12)';});
+      let ticking=false;
+      const run=()=>{const y=window.pageYOffset;pxEls.forEach(el=>{el.style.transform='scale(1.12) translateY('+(y*0.16)+'px)';});ticking=false;};
+      window.addEventListener('scroll',()=>{if(!ticking){requestAnimationFrame(run);ticking=true;}},{passive:true});
+      run();
+    }
   }
 
   if(document.readyState!=='loading'){inject();initFX();}
