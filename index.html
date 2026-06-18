@@ -202,7 +202,7 @@ const news=[
 ];
 document.getElementById('ngrid').innerHTML=news.map(n=>`
   <a class="ncard" href="community.html#news"><div class="nimg"><img src="${NB}${n.img}" alt="" loading="lazy" onerror="this.parentElement.textContent='Press'"></div>
-    <div class="nbody"><span class="ntag">Press</span><h3>${n.t}</h3><div class="ndate">${n.d}</div></a>`).join('');
+    <div class="nbody"><span class="ntag">Press</span><h3>${n.t}</h3><div class="ndate">${n.d}</div></div></a>`).join('');
 
 // skin ring + bars (home)
 const skinEl=document.getElementById('skin');
