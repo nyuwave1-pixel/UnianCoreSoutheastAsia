@@ -110,6 +110,46 @@
     if(hamb&&drawer){hamb.addEventListener('click',()=>{drawer.classList.add('open');hamb.setAttribute('aria-expanded','true');});
       drawer.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>{drawer.classList.remove('open');hamb.setAttribute('aria-expanded','false');}));}
     paintBadge();
+    mountChatbot();
+  }
+
+  /* ---------- site-wide AI chatbot widget ---------- */
+  function mountChatbot(){
+    if(document.getElementById('uniChat')) return;
+    const ASSISTANT='https://ai-assistant.unincore.com/?lang=en';
+    const wrap=document.createElement('div');
+    wrap.id='uniChat';
+    wrap.innerHTML=`
+      <button id="uniChatBtn" class="uc-fab" type="button" aria-label="Open UNI&CORE AI Assistant" aria-expanded="false">
+        <svg class="ic-chat" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"/><circle cx="8.5" cy="11.5" r="1"/><circle cx="12" cy="11.5" r="1"/><circle cx="15.5" cy="11.5" r="1"/></svg>
+        <svg class="ic-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        <span class="uc-fab-tip">Ask UNI&CORE AI</span>
+      </button>
+      <div id="uniChatPanel" class="uc-panel" role="dialog" aria-label="UNI&CORE AI Assistant" aria-hidden="true">
+        <div class="uc-head">
+          <div class="uc-h-l"><span class="uc-dot"></span><b>UNI&CORE AI Assistant</b></div>
+          <div class="uc-h-r">
+            <a class="uc-ext" href="${ASSISTANT}" target="_blank" rel="noopener" title="Open in new tab" aria-label="Open in new tab">&#8599;</a>
+            <button class="uc-close" type="button" aria-label="Close">&#10005;</button>
+          </div>
+        </div>
+        <div class="uc-body"><div class="uc-loading">Loading assistant…</div><iframe title="UNI&CORE AI Assistant" allow="microphone; camera; clipboard-write"></iframe></div>
+      </div>`;
+    document.body.appendChild(wrap);
+    const btn=wrap.querySelector('#uniChatBtn'), frame=wrap.querySelector('iframe'),
+          closeB=wrap.querySelector('.uc-close'), loadEl=wrap.querySelector('.uc-loading');
+    let loaded=false;
+    function open(){
+      if(!loaded){ frame.src=ASSISTANT; loaded=true;
+        frame.addEventListener('load',()=>{ if(loadEl) loadEl.style.display='none'; },{once:true}); }
+      wrap.classList.add('open'); btn.setAttribute('aria-expanded','true');
+      wrap.querySelector('.uc-panel').setAttribute('aria-hidden','false');
+    }
+    function close(){ wrap.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+      wrap.querySelector('.uc-panel').setAttribute('aria-hidden','true'); }
+    btn.addEventListener('click',()=> wrap.classList.contains('open') ? close() : open());
+    closeB.addEventListener('click',close);
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&wrap.classList.contains('open')) close(); });
   }
 
   /* ---------- product card renderer ---------- */

@@ -543,6 +543,41 @@ a,button,input,textarea,select{outline-offset:3px}
 .hero .brandline{color:#bfe0ad;margin-bottom:14px;animation:heroIn .85s 0s both}
 .page-hero .brandline{color:#bfe0ad;margin-bottom:12px}
 
+/* ============================================================
+   DESIGN UPGRADE v5 — site-wide AI chatbot widget
+   ============================================================ */
+#uniChat{position:fixed;right:22px;bottom:22px;z-index:1000;font-family:var(--sans)}
+.uc-fab{position:relative;width:62px;height:62px;border-radius:50%;border:none;cursor:pointer;background:var(--green);box-shadow:0 12px 30px rgba(92,154,70,.45);display:grid;place-items:center;transition:transform .2s,background .2s}
+.uc-fab:hover{background:var(--green-d);transform:translateY(-2px)}
+.uc-fab::after{content:"";position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 0 rgba(92,154,70,.5);animation:ucPulse 2.4s infinite}
+@keyframes ucPulse{0%{box-shadow:0 0 0 0 rgba(92,154,70,.45)}70%{box-shadow:0 0 0 16px rgba(92,154,70,0)}100%{box-shadow:0 0 0 0 rgba(92,154,70,0)}}
+.uc-fab svg{width:28px;height:28px;stroke:#fff;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;position:relative;z-index:1}
+.uc-fab .ic-chat circle{fill:#fff;stroke:none}
+.uc-fab .ic-close{display:none}
+#uniChat.open .uc-fab{background:var(--charcoal)}
+#uniChat.open .uc-fab::after{display:none}
+#uniChat.open .ic-chat{display:none}
+#uniChat.open .ic-close{display:block}
+.uc-fab-tip{position:absolute;right:74px;top:50%;transform:translateY(-50%);white-space:nowrap;background:var(--charcoal);color:#fff;font-size:12.5px;font-weight:700;padding:8px 13px;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .2s}
+.uc-fab:hover .uc-fab-tip{opacity:1}
+#uniChat.open .uc-fab-tip{display:none}
+.uc-panel{position:absolute;right:0;bottom:78px;width:400px;height:600px;max-height:78vh;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 24px 60px rgba(43,43,43,.28);display:flex;flex-direction:column;opacity:0;transform:translateY(16px) scale(.98);pointer-events:none;transition:opacity .25s,transform .25s}
+#uniChat.open .uc-panel{opacity:1;transform:none;pointer-events:auto}
+.uc-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:var(--green);color:#fff}
+.uc-h-l{display:flex;align-items:center;gap:8px;font-size:14.5px}
+.uc-dot{width:8px;height:8px;border-radius:50%;background:#bfe0ad;box-shadow:0 0 0 3px rgba(255,255,255,.25)}
+.uc-h-r{display:flex;align-items:center;gap:6px}
+.uc-h-r .uc-ext,.uc-h-r .uc-close{color:#fff;background:rgba(255,255,255,.16);border:none;width:30px;height:30px;border-radius:8px;display:grid;place-items:center;cursor:pointer;font-size:15px;text-decoration:none;line-height:1}
+.uc-h-r .uc-ext:hover,.uc-h-r .uc-close:hover{background:rgba(255,255,255,.32)}
+.uc-body{flex:1;position:relative;background:#f6f6f3}
+.uc-body iframe{width:100%;height:100%;border:0;display:block}
+.uc-loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:13px;font-weight:700}
+@media(max-width:480px){
+  #uniChat{right:16px;bottom:16px}
+  .uc-panel{position:fixed;inset:0;width:100%;height:100%;max-height:100%;border-radius:0}
+  #uniChat.open .uc-fab{display:none}
+}
+
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
 .newbeg .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding-top:clamp(70px,9vw,120px);padding-bottom:clamp(70px,9vw,120px)}
