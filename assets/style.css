@@ -215,15 +215,18 @@ header.nav .wrap{display:flex;align-items:center;justify-content:space-between;h
 .subband .chip.on{background:#fff;color:var(--green-d);font-weight:800;border-color:#fff}
 
 /* news cards */
-.ngrid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
-.ncard{background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;transition:.25s;cursor:pointer}
-.ncard:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
-.ncard .nimg{height:200px;background:var(--paper);display:grid;place-items:center;color:var(--silver);overflow:hidden}
+.ngrid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ncard{display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;text-decoration:none;color:inherit;box-shadow:0 2px 16px rgba(43,43,43,.05)}
+.ncard:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(43,43,43,.14);border-color:rgba(92,154,70,.4)}
+.ncard .nimg{position:relative;aspect-ratio:16/10;background:linear-gradient(150deg,var(--sand),var(--paper));display:grid;place-items:center;color:var(--silver);font-weight:800;font-size:13px;overflow:hidden}
 .ncard .nimg img{width:100%;height:100%;object-fit:cover}
-.ncard .nbody{padding:24px}
-.ncard .ntag{font-size:11px;font-weight:800;color:var(--green-d);background:var(--green-l);padding:5px 11px;border-radius:7px}
-.ncard h3{font-size:17px;font-weight:800;line-height:1.5;margin:14px 0 14px;min-height:76px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
-.ncard .ndate{font-size:13px;color:var(--muted);font-weight:700}
+.ncard .nimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,10,0) 55%,rgba(10,12,10,.22));pointer-events:none}
+.ncard .nbody{padding:22px 22px 24px;display:flex;flex-direction:column;gap:13px;flex:1}
+.ncard .ntag{align-self:flex-start;font-size:11px;font-weight:800;color:var(--green-d);background:var(--green-l);padding:6px 13px;border-radius:30px;letter-spacing:.4px;text-transform:uppercase}
+.ncard h3{font-size:16.5px;font-weight:800;line-height:1.55;margin:0;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s}
+.ncard:hover h3{color:var(--green-d)}
+.ncard .ndate{font-size:12.5px;color:var(--muted);font-weight:700;margin-top:auto;display:flex;align-items:center;gap:8px;padding-top:4px}
+.ncard .ndate::before{content:"";width:16px;height:1px;background:var(--green);display:inline-block}
 
 /* global cta */
 .glob{background-image:linear-gradient(120deg,rgba(43,43,43,.92),rgba(20,20,20,.92)),url('https://superhero.co.kr/unincore/images/main/main_brand_bg.jpg');background-size:cover;background-position:center;color:#fff;border-radius:28px;padding:56px;display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap}
@@ -325,7 +328,8 @@ footer{background:#222;color:#9a9c97;padding:64px 0 40px}
 .fbottom{display:flex;justify-content:space-between;align-items:center;padding-top:26px;flex-wrap:wrap;gap:14px}
 .fbottom .copy{font-size:12.5px;color:#6f716a}
 .fbottom .badges{display:flex;gap:8px;flex-wrap:wrap}
-.fbottom .badges span{font-size:11px;font-weight:700;padding:6px 13px;border:1px solid #3a3b36;border-radius:20px;color:#9a9c97}
+.fbottom .badges span,.fbottom .badges a{font-size:11px;font-weight:700;padding:6px 13px;border:1px solid #3a3b36;border-radius:20px;color:#9a9c97;transition:.2s}
+.fbottom .badges a:hover{border-color:var(--green);color:#fff}
 
 /* cart badge */
 .cart-badge{position:absolute;top:-6px;right:-6px;min-width:18px;height:18px;border-radius:9px;background:var(--green);color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;padding:0 4px}
@@ -577,6 +581,26 @@ a,button,input,textarea,select{outline-offset:3px}
   .uc-panel{position:fixed;inset:0;width:100%;height:100%;max-height:100%;border-radius:0}
   #uniChat.open .uc-fab{display:none}
 }
+
+/* ============================================================
+   DESIGN UPGRADE v6 — TikTok / social section
+   ============================================================ */
+.tt-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin-bottom:30px}
+.tt-handle{display:flex;align-items:center;gap:14px}
+.tt-logo{width:54px;height:54px;border-radius:15px;background:#000;color:#fff;display:grid;place-items:center;font-size:26px;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.tt-handle b{font-size:18px;display:block;letter-spacing:-.3px}
+.tt-handle span{font-size:13px;color:var(--muted);font-weight:700}
+.tt-embeds{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start}
+.tt-embeds .tiktok-embed{margin:0!important;border-radius:14px;overflow:hidden}
+.tt-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:18px}
+.tt-card{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px;transition:transform .25s,box-shadow .25s,border-color .25s;color:inherit}
+.tt-card:hover{box-shadow:var(--shadow-md);transform:translateY(-4px);border-color:#000}
+.tt-cat{font-size:12px;font-weight:800;color:#000;letter-spacing:.3px}
+.tt-card p{font-size:14.5px;color:var(--graphite);line-height:1.7;flex:1}
+.tt-go{font-size:13px;font-weight:800;color:var(--green-d)}
+.tt-shop{margin-top:30px;background:linear-gradient(120deg,#111,#2b2b2b);color:#fff;border-radius:var(--radius);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-weight:800;font-size:16px}
+.tt-shop a{background:#fff;color:#111;padding:12px 22px;border-radius:30px;font-size:14px;white-space:nowrap;font-weight:800}
+.tt-shop a:hover{background:var(--green);color:#fff}
 
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}

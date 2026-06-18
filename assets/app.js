@@ -61,7 +61,7 @@
       <li data-nav="ai"><a href="ai-analysis.html">AI ANALYSIS</a><div class="submenu"><a href="ai-analysis.html">Skin Analysis</a><a href="skin-quiz.html">Skin Quiz</a><a href="ai-analysis.html#recommend">Recommendations</a></div></li>
       <li data-nav="sub"><a href="subscription.html">SUBSCRIPTION</a><div class="submenu"><a href="subscription.html">Plans & Benefits</a><a href="rewards.html">Rewards</a><a href="subscription.html#faq">FAQ</a></div></li>
       <li data-nav="about"><a href="about.html">STORY</a><div class="submenu"><a href="about.html#about">About us</a><a href="about.html#brand">Brand Story</a><a href="about.html#history">History</a><a href="about.html#business">Business</a></div></li>
-      <li data-nav="community"><a href="community.html">COMMUNITY</a><div class="submenu"><a href="community.html#news">News</a><a href="community.html#reviews">Reviews</a><a href="community.html#tips">Beauty Tips</a></div></li>
+      <li data-nav="community"><a href="community.html">COMMUNITY</a><div class="submenu"><a href="community.html#news">News</a><a href="community.html#reviews">Reviews</a><a href="community.html#tiktok">TikTok</a><a href="community.html#tips">Beauty Tips</a></div></li>
       <li data-nav="support"><a href="support.html">SUPPORT</a><div class="submenu"><a href="support.html#faq">FAQ</a><a href="support.html#contact">Contact</a><a href="support.html#shipping">Shipping</a></div></li>
     </ul>
     <div class="nav-tools">
@@ -97,7 +97,7 @@
     </div>
     <div class="fbottom">
       <div class="copy">© 2025 UNI&CORE USA, INC. All rights reserved.</div>
-      <div class="badges"><span>Instagram</span><span>YouTube</span><span>KakaoTalk</span><span>PWA</span><span>ESG</span></div>
+      <div class="badges"><a href="https://www.instagram.com/unincore.official/" target="_blank" rel="noopener">Instagram</a><a href="https://www.youtube.com/channel/UC8N5ddiUjYan6rxn5laJcEg" target="_blank" rel="noopener">YouTube</a><a href="https://www.tiktok.com/@uniandcore_usa" target="_blank" rel="noopener">TikTok</a><span>KakaoTalk</span><span>PWA</span><span>ESG</span></div>
     </div>
   </div></footer>`;
 
