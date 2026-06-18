@@ -57,7 +57,7 @@
     <a class="logo" href="index.html" aria-label="UNI&CORE home"><img class="logo-img" src="https://superhero.co.kr/unincore/images/common/logo.png" alt="UNI&CORE SEA"></a>
     <ul class="menu">
       <li data-nav="products"><a href="products.html">SHOP</a><div class="submenu"><a href="products.html#skincare">Skincare</a><a href="products.html#healthcare">Healthcare</a><a href="products.html#living">Living</a><a href="products.html#package">Packages</a></div></li>
-      <li data-nav="derma"><a href="derma.html">DERMA</a><div class="submenu"><a href="derma-home.html">Derma Home</a><a href="derma-10.html">Derma 10</a><a href="derma-10-pro.html">Derma 10 Pro</a><a href="derma-hand.html">Derma Hand Hybrid</a></div></li>
+      <li data-nav="derma"><a href="derma.html">DERMA</a><div class="submenu"><a href="derma.html#derma-home">Derma Home</a><a href="derma.html#derma-10">Derma 10</a><a href="derma.html#derma-10-pro">Derma 10 Pro</a><a href="derma.html#derma-hand">Derma Hand Hybrid</a></div></li>
       <li data-nav="ai"><a href="ai-analysis.html">AI ANALYSIS</a><div class="submenu"><a href="ai-analysis.html">Skin Analysis</a><a href="skin-quiz.html">Skin Quiz</a><a href="ai-analysis.html#recommend">Recommendations</a></div></li>
       <li data-nav="sub"><a href="subscription.html">SUBSCRIPTION</a><div class="submenu"><a href="subscription.html">Plans & Benefits</a><a href="rewards.html">Rewards</a><a href="subscription.html#faq">FAQ</a></div></li>
       <li data-nav="about"><a href="about.html">STORY</a><div class="submenu"><a href="about.html#about">About us</a><a href="about.html#brand">Brand Story</a><a href="about.html#history">History</a><a href="about.html#business">Business</a></div></li>
