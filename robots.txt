@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /cart.html
+
+Sitemap: https://nyuwave1-pixel.github.io/UnianCoreSoutheastAsia/sitemap.xml
