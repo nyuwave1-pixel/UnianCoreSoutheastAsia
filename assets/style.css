@@ -583,24 +583,41 @@ a,button,input,textarea,select{outline-offset:3px}
 }
 
 /* ============================================================
-   DESIGN UPGRADE v6 — TikTok / social section
+   DESIGN UPGRADE v6 — TikTok / social section (uniform premium)
    ============================================================ */
-.tt-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin-bottom:30px}
-.tt-handle{display:flex;align-items:center;gap:14px}
-.tt-logo{width:54px;height:54px;border-radius:15px;background:#000;color:#fff;display:grid;place-items:center;font-size:26px;font-weight:800;box-shadow:0 8px 20px rgba(0,0,0,.25)}
-.tt-handle b{font-size:18px;display:block;letter-spacing:-.3px}
-.tt-handle span{font-size:13px;color:var(--muted);font-weight:700}
-.tt-embeds{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;align-items:start}
-.tt-embeds .tiktok-embed{margin:0!important;border-radius:14px;overflow:hidden}
-.tt-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:18px}
-.tt-card{display:flex;flex-direction:column;gap:12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius-sm);padding:22px;transition:transform .25s,box-shadow .25s,border-color .25s;color:inherit}
-.tt-card:hover{box-shadow:var(--shadow-md);transform:translateY(-4px);border-color:#000}
-.tt-cat{font-size:12px;font-weight:800;color:#000;letter-spacing:.3px}
-.tt-card p{font-size:14.5px;color:var(--graphite);line-height:1.7;flex:1}
-.tt-go{font-size:13px;font-weight:800;color:var(--green-d)}
-.tt-shop{margin-top:30px;background:linear-gradient(120deg,#111,#2b2b2b);color:#fff;border-radius:var(--radius);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-weight:800;font-size:16px}
-.tt-shop a{background:#fff;color:#111;padding:12px 22px;border-radius:30px;font-size:14px;white-space:nowrap;font-weight:800}
-.tt-shop a:hover{background:var(--green);color:#fff}
+.tt-top{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;background:linear-gradient(120deg,#fff,#f6f6f3);border:1px solid var(--line);border-radius:var(--radius);padding:22px 26px;margin-bottom:34px}
+.tt-handle{display:flex;align-items:center;gap:15px}
+.tt-logo{width:56px;height:56px;border-radius:16px;background:#161823;color:#fff;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.25)}
+.tt-logo svg{width:30px;height:30px}
+.tt-h-txt b{font-size:18px;display:block;letter-spacing:-.3px}
+.tt-h-txt span{font-size:13px;color:var(--muted);font-weight:700}
+.tt-sub{display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 28px;border-radius:14px;background:linear-gradient(135deg,#FE2C55,#161823);color:#fff;font-weight:800;font-size:15px;box-shadow:0 12px 28px rgba(254,44,85,.32);transition:transform .25s,box-shadow .25s}
+.tt-sub:hover{transform:translateY(-2px);box-shadow:0 16px 36px rgba(254,44,85,.45)}
+.tt-sub svg{width:22px;height:22px}
+.tt-reel{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:18px}
+.tt-clip{display:flex;flex-direction:column;gap:11px;text-decoration:none;color:inherit}
+.tt-thumb{position:relative;aspect-ratio:9/16;border-radius:16px;overflow:hidden;display:grid;place-items:center;box-shadow:0 10px 26px rgba(0,0,0,.16);transition:transform .28s,box-shadow .28s}
+.tt-clip:hover .tt-thumb{transform:translateY(-6px);box-shadow:0 22px 44px rgba(0,0,0,.28)}
+.tt-thumb::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(125deg,rgba(255,255,255,.06) 0 2px,transparent 2px 22px)}
+.tt-thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04) 40%,rgba(0,0,0,.42))}
+.tt-thumb.g1{background:linear-gradient(155deg,#7fb964,#2f5a23)}
+.tt-thumb.g2{background:linear-gradient(155deg,#3a3a3a,#0e0e0e)}
+.tt-thumb.g3{background:linear-gradient(155deg,#5C9A46,#161823)}
+.tt-thumb.g4{background:linear-gradient(155deg,#FE2C55,#161823)}
+.tt-thumb.g5{background:linear-gradient(155deg,#25F4EE,#161823 58%,#FE2C55)}
+.tt-thumb.g6{background:linear-gradient(155deg,#a9d693,#467A35)}
+.tt-thumb.g7{background:linear-gradient(155deg,#54585a,#161823)}
+.tt-tk{position:absolute;top:12px;right:12px;z-index:3;color:#fff;opacity:.92;width:24px;height:24px}
+.tt-tk svg{width:100%;height:100%}
+.tt-play{position:relative;z-index:3;width:54px;height:54px;border-radius:50%;background:rgba(255,255,255,.94);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.3);transition:transform .25s}
+.tt-clip:hover .tt-play{transform:scale(1.1)}
+.tt-play svg{width:22px;height:22px;margin-left:3px;fill:#161823}
+.tt-meta{position:absolute;left:12px;bottom:12px;right:12px;z-index:3;color:#fff;font-size:12px;font-weight:800;letter-spacing:.2px;text-shadow:0 1px 5px rgba(0,0,0,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tt-cap{font-size:13px;font-weight:700;color:var(--graphite);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.tt-shop{margin-top:34px;background:linear-gradient(120deg,#161823,#3a3a3a);color:#fff;border-radius:var(--radius);padding:26px 30px;display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;font-weight:800;font-size:16px}
+.tt-shop a{background:#FE2C55;color:#fff;padding:13px 24px;border-radius:30px;font-size:14px;white-space:nowrap;font-weight:800;transition:.2s}
+.tt-shop a:hover{background:#fff;color:#161823}
+@media(max-width:560px){.tt-reel{grid-template-columns:1fr 1fr}.tt-sub{width:100%;justify-content:center}}
 
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
