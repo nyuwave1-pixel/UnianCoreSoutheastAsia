@@ -42,6 +42,24 @@ else {
     : `<button class="btn btn-green" onclick="UNICORE.addToCart(${p.id})">Add to cart →</button>
        <a class="btn btn-outline" href="ai-analysis.html">Get a recommendation</a>`;
   document.title = p.name + ' — UNI&CORE';
+  const d = UNICORE.detail(p.id) || {};
+  const benefits = d.ben ? `
+    <div class="pd-sec">
+      <h2 class="pd-h">Why you'll love it</h2>
+      <div class="pd-benefits">${d.ben.map(b=>`
+        <div class="pdb"><div class="pdb-i"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg></div><h4>${b[0]}</h4><p>${b[1]}</p></div>`).join('')}</div>
+    </div>` : '';
+  const how = d.how ? `
+    <div class="pd-how">
+      <h2 class="pd-h">How to use</h2>
+      <p>${d.how}</p>
+    </div>` : '';
+  const infoRows = d.info ? Object.entries(d.info).map(([k,v])=>`<tr><th>${k}</th><td>${v}</td></tr>`).join('') : '';
+  const infoTable = `
+    <div class="pd-sec">
+      <h2 class="pd-h">Product information</h2>
+      <table class="pd-info"><tbody>${infoRows}<tr><th>Price</th><td>${UNICORE.peso(p.php)} <span style="color:var(--muted);font-weight:700">(${p.live?'Shopee retail':'Member price'})</span></td></tr></tbody></table>
+    </div>`;
   root.innerHTML = `
     <div class="crumb" style="font-size:12.5px;font-weight:700;color:#8C8F8C;margin-bottom:20px"><a href="index.html" style="color:#8C8F8C">HOME</a> › <a href="products.html" style="color:#8C8F8C">SHOP</a> › ${p.cat}</div>
     <div class="pd">
@@ -50,7 +68,7 @@ else {
         <span class="pill">${p.live?'BEST · On Shopee':'New'}</span>
         <div class="cat">${p.cat}</div>
         <h1>${p.name}</h1>
-        <div class="desc">${p.desc}</div>
+        <div class="desc">${d.long||p.desc}</div>
         <div class="priceline">${price}</div>
         <div class="pbtns">${buy}</div>
         <div class="feats">
@@ -59,7 +77,8 @@ else {
           <div class="ft"><svg viewBox="0 0 24 24"><path d="M3 7h13v10H3zM16 10h4l1 3v4h-5"/><circle cx="7" cy="19" r="1.5"/><circle cx="18" cy="19" r="1.5"/></svg>Extra discount & free shipping with subscription</div>
         </div>
       </div>
-    </div>`;
+    </div>
+    ${benefits}${how}${infoTable}`;
 }
 const rel = UNICORE.PRODUCTS.filter(x=>p&&x.cat===p.cat&&x.id!=id).slice(0,4);
 const host=document.getElementById('related');
