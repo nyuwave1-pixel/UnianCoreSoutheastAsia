@@ -669,6 +669,27 @@ a,button,input,textarea,select{outline-offset:3px}
 .wl-follow:hover{color:#fff;border-color:#fff}
 @media(max-width:480px){.cd-i{min-width:72px;padding:14px 8px}}
 
+/* ============================================================
+   DESIGN UPGRADE v8 — product detail (rich per-product)
+   ============================================================ */
+.pd-sec{margin-top:54px;padding-top:46px;border-top:1px solid var(--line)}
+.pd-h{font-family:var(--serif);font-weight:600;font-size:clamp(22px,2.6vw,32px);letter-spacing:-.4px;margin-bottom:24px}
+.pd-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.pdb{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;transition:transform .25s,box-shadow .25s,border-color .25s}
+.pdb:hover{box-shadow:var(--shadow-md);transform:translateY(-4px);border-color:rgba(92,154,70,.4)}
+.pdb-i{width:44px;height:44px;border-radius:12px;background:var(--green-l);display:grid;place-items:center;margin-bottom:14px}
+.pdb-i svg{width:22px;height:22px;stroke:var(--green-d);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.pdb h4{font-size:16px;font-weight:800;margin-bottom:7px}
+.pdb p{font-size:14px;color:var(--graphite);line-height:1.7}
+.pd-how{background:var(--green-l);border-radius:18px;padding:32px 34px;margin-top:54px}
+.pd-how .pd-h{margin-bottom:12px}
+.pd-how p{font-size:15.5px;color:var(--graphite);line-height:1.85;max-width:72ch}
+.pd-info{width:100%;border-collapse:collapse;max-width:580px}
+.pd-info th,.pd-info td{text-align:left;padding:14px 16px;font-size:14.5px;border-bottom:1px solid var(--line)}
+.pd-info th{width:38%;color:var(--muted);font-weight:800}
+.pd-info td{color:var(--ink);font-weight:700}
+@media(max-width:760px){.pd-benefits{grid-template-columns:1fr}.pd-how{padding:24px}}
+
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
 .newbeg .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding-top:clamp(70px,9vw,120px);padding-bottom:clamp(70px,9vw,120px)}
