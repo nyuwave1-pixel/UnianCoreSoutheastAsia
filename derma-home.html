@@ -20,10 +20,15 @@
 .dh-feats .f p{font-size:13.5px;color:var(--graphite);line-height:1.7}
 .dh-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 .dh-gallery img{width:100%;aspect-ratio:1;object-fit:contain;background:#0d0d0d;border-radius:var(--radius-sm)}
-.dh-embed{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper)}
-.dh-embed iframe{width:100%;height:1400px;border:0;display:block}
+.dh-embed{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper);box-shadow:var(--shadow-md)}
+.dh-embed iframe{width:100%;height:88vh;min-height:840px;border:0;display:block}
+.dh-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--charcoal);color:#fff;padding:12px 18px;flex-wrap:wrap}
+.dh-bar .l{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
+.dh-bar .l .dot{width:8px;height:8px;border-radius:50%;background:#bfe0ad;box-shadow:0 0 0 3px rgba(255,255,255,.2)}
+.dh-bar a{background:#fff;color:var(--charcoal);font-weight:800;font-size:13px;padding:9px 16px;border-radius:30px}
+.dh-bar a:hover{background:var(--green);color:#fff}
 .dh-note{font-size:12.5px;color:var(--muted);font-weight:700;text-align:center;margin-top:14px}
-@media(max-width:640px){.dh-feats{grid-template-columns:1fr}.dh-embed iframe{height:900px}}
+@media(max-width:640px){.dh-feats{grid-template-columns:1fr}.dh-embed iframe{height:80vh;min-height:680px}}
 </style>
 </head>
 <body data-page="derma">
@@ -68,18 +73,20 @@
     <span style="font-size:13px;font-weight:800;color:var(--green-d);background:var(--green-l);padding:9px 16px;border-radius:30px">Body Care</span>
   </div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px">
-    <a class="btn btn-green" href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener">Open full product page →</a>
+    <a class="btn btn-green" href="#experience">Experience DermaHome 10 →</a>
+    <a class="btn btn-dark" href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener">Open in new tab ↗</a>
     <a class="btn btn-outline" href="support.html#contact">Inquire</a>
   </div>
 </div></section>
 
-<!-- Embedded full detail (deployed Derma Home page) -->
-<section class="section alt"><div class="wrap">
-  <div class="shead reveal"><div class="k">Product Detail</div><h2>Derma Home — Full Details</h2></div>
+<!-- Embedded full DermaHome 10 experience (live page) -->
+<section class="section alt" id="experience"><div class="wrap">
+  <div class="shead reveal"><div class="k">DermaHome 10 · Full Experience</div><h2>Explore the live DermaHome 10 page</h2><p>8 medical-aesthetic heads · QR session system · HQ-direct care — browse the full official experience right here.</p></div>
   <div class="dh-embed reveal">
-    <iframe src="https://unicore-dermahome-qr.netlify.app" title="Derma Home product detail" loading="lazy"></iframe>
+    <div class="dh-bar"><div class="l"><span class="dot"></span>UNI&CORE Official · DermaHome 10</div><a href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener">Open in new tab ↗</a></div>
+    <iframe src="https://unicore-dermahome-qr.netlify.app" title="DermaHome 10 official experience" loading="lazy" allow="fullscreen"></iframe>
   </div>
-  <div class="dh-note">If the detail above doesn't load, <a href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener" style="color:var(--green-d)">open the full Derma Home page →</a></div>
+  <div class="dh-note">If the experience above doesn't load, <a href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener" style="color:var(--green-d)">open the full DermaHome 10 page →</a></div>
 </div></section>
 </main>
 
