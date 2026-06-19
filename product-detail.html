@@ -68,6 +68,20 @@ else {
       <h2 class="pd-h">Product information</h2>
       <table class="pd-info"><tbody>${infoRows}<tr><th>Price</th><td>${UNICORE.peso(p.php)} <span style="color:var(--muted);font-weight:700">(${p.live?'Shopee retail':'Member price'})</span></td></tr></tbody></table>
     </div>`;
+  const CONCEPT = {
+    Skincare:'https://d8j0ntlcm91z4.cloudfront.net/user_3DTyZSlqPjD203YBlwJWTda3q73/hf_20260619_013837_56591e0c-7a86-474a-aae2-4538df9e95ae.png',
+    Healthcare:'https://d8j0ntlcm91z4.cloudfront.net/user_3DTyZSlqPjD203YBlwJWTda3q73/hf_20260619_013950_a4e0f2e7-040c-415f-bf80-d930c468512e.png'
+  };
+  const conceptImg = CONCEPT[p.cat] || CONCEPT.Skincare;
+  const isSkin = p.cat==='Skincare';
+  const conceptBand = `
+    <div class="pd-concept reveal" style="background-image:linear-gradient(90deg,rgba(12,16,10,.62),rgba(12,16,10,.18)),url('${conceptImg}')">
+      <div class="pd-concept-in">
+        <div class="k">The UNI&CORE Experience</div>
+        <h2>${isSkin?'Glass-skin glow,<br>every single day':'Wellness, made<br>effortless'}</h2>
+        <p>${isSkin?'Clean K-beauty formulated for radiant, healthy-looking skin — a ritual you’ll love coming back to.':'Daily inner-care that helps you feel your best, inside and out — simple, consistent, effective.'}</p>
+      </div>
+    </div>`;
   root.innerHTML = `
     <div class="crumb" style="font-size:12.5px;font-weight:700;color:#8C8F8C;margin-bottom:20px"><a href="index.html" style="color:#8C8F8C">HOME</a> › <a href="products.html" style="color:#8C8F8C">SHOP</a> › ${p.cat}</div>
     <div class="pd">
@@ -86,7 +100,7 @@ else {
         </div>
       </div>
     </div>
-    ${benefits}${how}${infoTable}`;
+    ${benefits}${conceptBand}${how}${infoTable}`;
 }
 const rel = UNICORE.PRODUCTS.filter(x=>p&&x.cat===p.cat&&x.id!=id).slice(0,4);
 const host=document.getElementById('related');
