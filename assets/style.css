@@ -546,7 +546,7 @@ a,button,input,textarea,select{outline-offset:3px}
 .brandline{font-size:clamp(11px,1vw,13px);font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--green);opacity:.95}
 .hero .brandline{color:#bfe0ad;margin-bottom:14px;animation:heroIn .85s 0s both}
 .page-hero .brandline{color:#bfe0ad;margin-bottom:12px}
-.submenu .sub-feature{color:var(--green-d)!important;font-weight:800;border-top:1px solid var(--line);margin-top:5px;padding-top:11px!important}
+.submenu .sub-feature{color:var(--green-d)!important;font-weight:800;border-bottom:1px solid var(--line);margin-bottom:5px;padding-bottom:11px!important}
 .submenu .sub-feature:hover{background:var(--green-l)}
 
 /* ============================================================
