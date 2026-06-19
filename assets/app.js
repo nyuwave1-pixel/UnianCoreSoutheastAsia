@@ -48,8 +48,11 @@
     16:{long:'A signature revitalizing shampoo that energizes the scalp for healthier-feeling, fuller-looking hair. Daily cleansing care with a refreshing finish.',ben:[['Scalp energize','Refreshes and revitalizes the scalp.'],['Healthy cleanse','Gently cleanses without stripping.'],['Daily care','A revitalizing wash for every day.']],how:'Massage into wet hair and scalp, lather, then rinse thoroughly. Use daily.',info:{Type:'Shampoo',Category:'Skincare · Scalp',Origin:'Korea','Best for':'Scalp & hair care'}},
     17:{long:'A deep hydrating skin nutrition cream for intensive nourishment, lasting moisture and improved elasticity. A rich yet fast-absorbing finish that seals in your routine.',ben:[['Deep nourishment','Rich nutrition for thirsty skin.'],['Lasting moisture','Seals in hydration all day.'],['Elasticity care','Helps skin feel firmer, bouncier.']],how:'As the last step, warm a small amount and press into the face and neck. Use morning and night.',info:{Type:'Cream',Category:'Skincare',Origin:'Korea','Best for':'Dry & mature skin'}}
   };
-  const peso = n => '₱'+n.toLocaleString('en-US');
-  window.UNICORE = { PRODUCTS, DETAILS, PIMG, SHOPEE, peso, get:id=>PRODUCTS.find(p=>p.id==id), detail:id=>DETAILS[id] };
+  /* HQ 3-tier USD prices [retail, subscription] — member price = product.usd */
+  const PT = {1:[140,58],2:[223,95],3:[126,54],4:[40,17],5:[77,33],6:[122,52],7:[52,22],8:[117,50],9:[85,35],10:[84,36],11:[58,25],12:[51,22],13:[141,59],14:[176,75],15:[176,75],16:[84,35],17:[141,60]};
+  const peso = n => '₱'+Math.round(n).toLocaleString('en-US');
+  const tiers = id => { const p=PRODUCTS.find(x=>x.id==id), t=PT[id]; if(!p||!t) return null; return { retail:Math.round(p.php*t[0]/p.usd), member:p.php, sub:Math.round(p.php*t[1]/p.usd) }; };
+  window.UNICORE = { PRODUCTS, DETAILS, PIMG, SHOPEE, peso, get:id=>PRODUCTS.find(p=>p.id==id), detail:id=>DETAILS[id], tiers };
 
   /* ---------- cart (localStorage) ---------- */
   const CK='unicore_cart';

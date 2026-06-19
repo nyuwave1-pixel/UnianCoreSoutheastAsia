@@ -690,6 +690,24 @@ a,button,input,textarea,select{outline-offset:3px}
 .pd-info td{color:var(--ink);font-weight:700}
 @media(max-width:760px){.pd-benefits{grid-template-columns:1fr}.pd-how{padding:24px}}
 
+/* HQ-style 3-tier price block */
+.pd-price{display:flex;flex-direction:column;gap:12px;margin:22px 0 18px}
+.pp-head{display:flex;align-items:baseline;gap:10px;padding-bottom:6px}
+.pp-retail{font-family:var(--serif);font-weight:600;font-size:clamp(26px,2.6vw,34px);color:var(--ink)}
+.pp-rl{font-size:13px;color:var(--muted);font-weight:700}
+.pp-tier{display:flex;align-items:center;justify-content:space-between;gap:14px;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff}
+.pp-tier.on{border-color:var(--green);background:var(--green-l)}
+.pp-t{font-size:13px;font-weight:800;color:var(--graphite);letter-spacing:.2px}
+.pp-tier.on .pp-t{color:var(--green-d)}
+.pp-v{display:flex;align-items:baseline;gap:9px;margin-top:5px}
+.pp-v b{font-size:21px;font-weight:800;color:var(--ink)}
+.pp-tier.on .pp-v b{color:var(--green-d)}
+.pp-v s{font-size:13px;color:var(--muted);font-weight:700}
+.pp-b{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-weight:800;color:var(--muted);flex-shrink:0}
+.pp-b.on{border-color:var(--green);color:var(--green-d);background:#fff}
+.pd-ship{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--graphite);font-weight:700;border-top:1px solid var(--line);padding-top:16px;margin-bottom:6px}
+.pd-ship span:last-child{color:var(--muted);font-weight:700}
+
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
 .newbeg .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding-top:clamp(70px,9vw,120px);padding-bottom:clamp(70px,9vw,120px)}
