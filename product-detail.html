@@ -35,7 +35,15 @@ const p = UNICORE.get(id);
 const root = document.getElementById('pdRoot');
 if(!p){ root.innerHTML='<p style="text-align:center;padding:60px;color:#8C8F8C;font-weight:700">Product not found. <a href="products.html" style="color:#467A35">View all products</a></p>'; }
 else {
-  const price = `<span class="big">${UNICORE.peso(p.php)}</span><span class="ref">${p.live?'Shopee price':'Member price'}</span>`;
+  const t = UNICORE.tiers(p.id);
+  const priceBlock = t ? `
+    <div class="pd-price">
+      <div class="pp-head"><span class="pp-retail">${UNICORE.peso(t.retail)}</span><span class="pp-rl">Retail price</span></div>
+      <div class="pp-tier"><div class="pp-l"><div class="pp-t">UNI&CORE Membership</div><div class="pp-v"><b>${UNICORE.peso(t.member)}</b><s>${UNICORE.peso(t.retail)}</s></div></div><span class="pp-b">%</span></div>
+      <div class="pp-tier on"><div class="pp-l"><div class="pp-t">UNI&CORE Subscription</div><div class="pp-v"><b>${UNICORE.peso(t.sub)}</b><s>${UNICORE.peso(t.retail)}</s></div></div><span class="pp-b on">%</span></div>
+    </div>
+    <div class="pd-ship"><span>🚚 Free shipping on orders over ₱14,520</span><span>Authentic · ships from Korea${p.live?' · Live on Shopee':''}</span></div>`
+    : `<div class="priceline"><span class="big">${UNICORE.peso(p.php)}</span><span class="ref">${p.live?'Shopee price':'Member price'}</span></div>`;
   const buy = p.live
     ? `<button class="btn btn-green" onclick="UNICORE.addToCart(${p.id})">Add to cart →</button>
        <a class="btn btn-dark" href="${UNICORE.SHOPEE}" target="_blank" rel="noopener">Buy on Shopee</a>`
@@ -69,7 +77,7 @@ else {
         <div class="cat">${p.cat}</div>
         <h1>${p.name}</h1>
         <div class="desc">${d.long||p.desc}</div>
-        <div class="priceline">${price}</div>
+        ${priceBlock}
         <div class="pbtns">${buy}</div>
         <div class="feats">
           <div class="ft"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Authentic K-Beauty from HQ</div>
