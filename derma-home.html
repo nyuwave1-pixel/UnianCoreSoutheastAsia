@@ -20,15 +20,23 @@
 .dh-feats .f p{font-size:13.5px;color:var(--graphite);line-height:1.7}
 .dh-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 .dh-gallery img{width:100%;aspect-ratio:1;object-fit:contain;background:#0d0d0d;border-radius:var(--radius-sm)}
-.dh-embed{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--paper);box-shadow:var(--shadow-md)}
-.dh-embed iframe{width:100%;height:88vh;min-height:840px;border:0;display:block}
-.dh-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--charcoal);color:#fff;padding:12px 18px;flex-wrap:wrap}
-.dh-bar .l{display:flex;align-items:center;gap:10px;font-weight:800;font-size:14px}
-.dh-bar .l .dot{width:8px;height:8px;border-radius:50%;background:#bfe0ad;box-shadow:0 0 0 3px rgba(255,255,255,.2)}
-.dh-bar a{background:#fff;color:var(--charcoal);font-weight:800;font-size:13px;padding:9px 16px;border-radius:30px}
-.dh-bar a:hover{background:var(--green);color:#fff}
-.dh-note{font-size:12.5px;color:var(--muted);font-weight:700;text-align:center;margin-top:14px}
-@media(max-width:640px){.dh-feats{grid-template-columns:1fr}.dh-embed iframe{height:80vh;min-height:680px}}
+.dh-launch{display:grid;grid-template-columns:1.05fr .95fr;gap:0;border-radius:22px;overflow:hidden;box-shadow:var(--shadow-md);text-decoration:none;color:inherit;transition:transform .3s,box-shadow .3s}
+.dh-launch:hover{transform:translateY(-6px);box-shadow:0 28px 60px rgba(43,43,43,.22)}
+.dh-launch-media{position:relative;min-height:340px;background:linear-gradient(150deg,#1c241c,#2f3a2b 55%,#0e120e);display:grid;place-items:center}
+.dh-launch-media::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(125deg,rgba(255,255,255,.05) 0 2px,transparent 2px 24px)}
+.dh-launch-media .badge{position:absolute;top:18px;left:18px;font-size:12px;font-weight:800;letter-spacing:1px;color:#bfe0ad;background:rgba(92,154,70,.22);border:1px solid rgba(92,154,70,.5);padding:7px 13px;border-radius:30px}
+.dh-launch-media .play{position:relative;z-index:1;width:84px;height:84px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 12px 30px rgba(0,0,0,.35);transition:transform .3s}
+.dh-launch:hover .dh-launch-media .play{transform:scale(1.08)}
+.dh-launch-media .play svg{width:34px;height:34px;stroke:var(--charcoal);fill:none;stroke-width:2}
+.dh-launch-body{background:#fff;padding:clamp(28px,4vw,48px);display:flex;flex-direction:column;justify-content:center;gap:14px}
+.dh-launch-body .k{font-size:12.5px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--green-d)}
+.dh-launch-body h3{font-family:var(--serif);font-weight:600;font-size:clamp(24px,3vw,34px);letter-spacing:-.5px;line-height:1.15}
+.dh-launch-body p{font-size:15px;color:var(--graphite);line-height:1.8}
+.dh-launch-cta{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;margin-top:6px;height:52px;padding:0 30px;border-radius:14px;background:var(--green);color:#fff;font-weight:800;font-size:15px;box-shadow:var(--shadow-green)}
+.dh-launch:hover .dh-launch-cta{background:var(--green-d)}
+.dh-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.dh-chips span{font-size:12.5px;font-weight:800;color:var(--green-d);background:var(--green-l);padding:7px 14px;border-radius:30px}
+@media(max-width:760px){.dh-feats{grid-template-columns:1fr}.dh-launch{grid-template-columns:1fr}.dh-launch-media{min-height:240px;order:-1}}
 </style>
 </head>
 <body data-page="derma">
@@ -81,12 +89,20 @@
 
 <!-- Embedded full DermaHome 10 experience (live page) -->
 <section class="section alt" id="experience"><div class="wrap">
-  <div class="shead reveal"><div class="k">DermaHome 10 · Full Experience</div><h2>Explore the live DermaHome 10 page</h2><p>8 medical-aesthetic heads · QR session system · HQ-direct care — browse the full official experience right here.</p></div>
-  <div class="dh-embed reveal">
-    <div class="dh-bar"><div class="l"><span class="dot"></span>UNI&CORE Official · DermaHome 10</div><a href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener">Open in new tab ↗</a></div>
-    <iframe src="https://unicore-dermahome-qr.netlify.app" title="DermaHome 10 official experience" loading="lazy" allow="fullscreen"></iframe>
-  </div>
-  <div class="dh-note">If the experience above doesn't load, <a href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener" style="color:var(--green-d)">open the full DermaHome 10 page →</a></div>
+  <div class="shead reveal"><div class="k">DermaHome 10 · Full Experience</div><h2>The official DermaHome 10 page</h2><p>8 medical-aesthetic heads · QR session system · HQ-direct premium care.</p></div>
+  <a class="dh-launch reveal" href="https://unicore-dermahome-qr.netlify.app" target="_blank" rel="noopener">
+    <div class="dh-launch-media">
+      <span class="badge">UNI&CORE OFFICIAL</span>
+      <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="currentColor" stroke="none"/></svg></span>
+    </div>
+    <div class="dh-launch-body">
+      <div class="k">Launch the experience</div>
+      <h3>DermaHome 10 — the full interactive page</h3>
+      <p>Explore Face RF, Galvanic, Ultrasonic and High-frequency medical-aesthetic technology, the QR session system, and HQ-direct premium care — built as a complete experience.</p>
+      <div class="dh-chips"><span>8 Medical Heads</span><span>QR Sessions</span><span>HQ Care</span><span>7 Countries</span></div>
+      <span class="dh-launch-cta">Open the experience ↗</span>
+    </div>
+  </a>
 </div></section>
 </main>
 
