@@ -214,6 +214,9 @@
     let list=PRODUCTS.slice();
     if(opts.cat&&opts.cat!=='All') list=list.filter(p=>p.cat===opts.cat);
     if(opts.onlyShopee) list=list.filter(p=>p.live);
+    if(opts.sort==='price-asc') list.sort((a,b)=>a.php-b.php);
+    else if(opts.sort==='price-desc') list.sort((a,b)=>b.php-a.php);
+    else if(opts.sort==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
     if(opts.limit) list=list.slice(0,opts.limit);
     host.innerHTML=list.map(p=>{
       const priceBlock = `<div class="p">${peso(p.php)} <small>${p.live?'Shopee':'Member'}</small></div>`;
