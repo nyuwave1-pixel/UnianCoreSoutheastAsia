@@ -708,6 +708,14 @@ a,button,input,textarea,select{outline-offset:3px}
 .pd-ship{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--graphite);font-weight:700;border-top:1px solid var(--line);padding-top:16px;margin-bottom:6px}
 .pd-ship span:last-child{color:var(--muted);font-weight:700}
 
+/* AI lifestyle concept band */
+.pd-concept{position:relative;margin-top:54px;border-radius:20px;overflow:hidden;background-size:cover;background-position:center;min-height:340px;display:flex;align-items:center;box-shadow:var(--shadow-md)}
+.pd-concept-in{padding:clamp(30px,5vw,56px);max-width:560px;color:#fff}
+.pd-concept-in .k{font-size:12.5px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#bfe0ad;margin-bottom:14px}
+.pd-concept-in h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.4vw,40px);line-height:1.1;letter-spacing:-.5px;margin:0 0 14px}
+.pd-concept-in p{font-size:15.5px;line-height:1.8;color:rgba(255,255,255,.9);max-width:46ch}
+@media(max-width:560px){.pd-concept{min-height:300px}}
+
 /* warm-cream "New Beginning" editorial band (echoes HQ hero) */
 .newbeg{position:relative;background:linear-gradient(160deg,var(--cream) 0%,var(--cream-d) 100%);overflow:hidden}
 .newbeg .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center;padding-top:clamp(70px,9vw,120px);padding-bottom:clamp(70px,9vw,120px)}
