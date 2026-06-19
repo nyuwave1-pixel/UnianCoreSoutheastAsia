@@ -119,6 +119,24 @@ else {
       <div class="pd-g"><div class="gi"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h4>Secure checkout</h4><p>Safe payment via the official Shopee store.</p></div></div>
     </div>`;
 
+  // per-product FAQ + caution
+  const faq = `
+    <div class="pd-faq">
+      <h2 class="pd-h">Frequently asked</h2>
+      <details><summary>Is this an authentic UNI&CORE product?</summary><div class="fa">Yes. Every item ships HQ-direct from Korea and is genuine UNI&CORE stock.${p.live?' This product is also available on our official Shopee store.':''}</div></details>
+      <details><summary>Do you ship to the Philippines?</summary><div class="fa">Yes — we ship internationally from Korea with tracking. Free shipping applies on orders over ₱14,520; delivery time varies by destination.</div></details>
+      <details><summary>How do I use it?</summary><div class="fa">Follow the “How to use” steps above.${isSkin?' For skincare, we recommend a quick patch test before first use.':''}</div></details>
+      <details><summary>How does a subscription save me money?</summary><div class="fa">A subscription adds an extra member discount, bonus points and free shipping, with auto-delivery on a 1, 3, 6 or 12-month cycle.</div></details>
+    </div>`;
+  const caution = `
+    <div class="pd-caution">
+      <div class="ci"><svg viewBox="0 0 24 24"><path d="M12 9v4M12 17h.01M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+      <div>
+        <h4>Caution & storage</h4>
+        <p>${isSkin?'For external use only. Patch test before first use and discontinue if irritation occurs. Store away from direct sunlight and keep out of reach of children.':'Follow the recommended daily amount and do not exceed it. This is not a substitute for a balanced diet. Consult a professional if pregnant, nursing or taking medication. Store in a cool, dry place away from direct sunlight.'}</p>
+      </div>
+    </div>`;
+
   // subscribe & save band
   const subsave = `
     <div class="pd-subsave reveal">
@@ -150,7 +168,7 @@ else {
         </div>
       </div>
     </div>
-    ${guarantee}${benefits}${conceptBand}${how}${subsave}${infoTable}`;
+    ${guarantee}${benefits}${conceptBand}${how}${subsave}${infoTable}${faq}${caution}`;
 
   // sticky mobile buy bar
   const bar=document.createElement('div');
