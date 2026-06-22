@@ -94,6 +94,12 @@
     if(i>-1){a.splice(i,1);on=false;toast('Removed from wishlist');}else{a.push(id);on=true;toast('Saved to wishlist ♥');}
     setWish(a);return on;};
 
+  /* ---------- recently viewed (localStorage) ---------- */
+  const RK='unicore_recent';
+  function getRecent(){try{return (JSON.parse(localStorage.getItem(RK))||[]).map(Number);}catch(e){return [];}}
+  window.UNICORE.getRecent=getRecent;
+  window.UNICORE.pushRecent=function(id){id=+id;if(!id)return;let a=getRecent().filter(x=>x!==id);a.unshift(id);localStorage.setItem(RK,JSON.stringify(a.slice(0,8)));};
+
   /* ---------- toast ---------- */
   let tT;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.appendChild(el);}el.textContent=m;el.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>el.classList.remove('show'),1700);}
   window.UNICORE.toast=toast;
@@ -250,17 +256,26 @@
     else if(opts.sort==='price-desc') list.sort((a,b)=>b.php-a.php);
     else if(opts.sort==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
     if(opts.limit) list=list.slice(0,opts.limit);
-    host.innerHTML=list.map(p=>{
-      const priceBlock = `<div class="p">${peso(p.php)} <small>${p.live?'Shopee':'Member'}</small></div>`;
-      const badge = p.live ? `<span class="badge">On Shopee</span>` : `<span class="badge soon">New</span>`;
-      const btn = `<button class="addcart" onclick="event.preventDefault();UNICORE.addToCart(${p.id})">Add to cart</button>`;
-      const wish = `<button class="wish-btn${getWish().indexOf(p.id)>-1?' on':''}" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on',UNICORE.toggleWishlist(${p.id}))" aria-label="Save to wishlist"><svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/></svg></button>`;
-      return `<a class="prod" data-cat="${p.cat}" href="product-detail.html?id=${p.id}">
-        <div class="img">${badge}${wish}<span class="ph">${p.name.slice(0,16)}</span>
-          <img src="${PIMG}${p.img}" alt="${p.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
-        <div class="body"><div class="cat">${p.cat}</div><div class="nm">${p.name}</div>
-          ${priceBlock}${btn}</div>
-      </a>`;}).join('');
+    host.innerHTML=list.map(cardHTML).join('');
+  };
+  function cardHTML(p){
+    const priceBlock = `<div class="p">${peso(p.php)} <small>${p.live?'Shopee':'Member'}</small></div>`;
+    const badge = p.live ? `<span class="badge">On Shopee</span>` : `<span class="badge soon">New</span>`;
+    const btn = `<button class="addcart" onclick="event.preventDefault();UNICORE.addToCart(${p.id})">Add to cart</button>`;
+    const wish = `<button class="wish-btn${getWish().indexOf(p.id)>-1?' on':''}" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on',UNICORE.toggleWishlist(${p.id}))" aria-label="Save to wishlist"><svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/></svg></button>`;
+    return `<a class="prod" data-cat="${p.cat}" href="product-detail.html?id=${p.id}">
+      <div class="img">${badge}${wish}<span class="ph">${p.name.slice(0,16)}</span>
+        <img src="${PIMG}${p.img}" alt="${p.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+      <div class="body"><div class="cat">${p.cat}</div><div class="nm">${p.name}</div>
+        ${priceBlock}${btn}</div>
+    </a>`;
+  }
+  window.UNICORE.cardHTML=cardHTML;
+  window.UNICORE.renderRecent=function(sel,excludeId){
+    const host=document.querySelector(sel);if(!host)return 0;
+    const items=getRecent().filter(id=>id!==+excludeId).map(id=>PRODUCTS.find(p=>p.id==id)).filter(Boolean).slice(0,5);
+    host.innerHTML=items.map(cardHTML).join('');
+    return items.length;
   };
 
   /* ---------- interactions ---------- */
