@@ -123,7 +123,11 @@
   // category banners jump here and preset the filter
   document.querySelectorAll('[data-shopcat]').forEach(a=>a.addEventListener('click',()=>{
     state.cat=a.dataset.shopcat;setChip(state.cat);apply();}));
+  // deep-link: products.html?cat=Skincare#shop (from home / other pages)
+  const qCat=new URLSearchParams(location.search).get('cat');
+  if(qCat && ['All','Skincare','Healthcare','Available'].includes(qCat)){state.cat=qCat;setChip(qCat);}
   apply();
+  if(qCat){const sec=document.getElementById('shop');if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),120);}
 })();
 </script>
 </body>
