@@ -81,6 +81,19 @@
   window.UNICORE.getCart=getCart;window.UNICORE.setCart=setCart;window.UNICORE.cartCount=cartCount;
   function paintBadge(){const b=document.getElementById('cartCount');if(b){const n=cartCount();b.textContent=n;b.style.display=n?'grid':'none';}}
 
+  /* ---------- wishlist (localStorage) ---------- */
+  const WK='unicore_wishlist';
+  function getWish(){try{return (JSON.parse(localStorage.getItem(WK))||[]).map(Number);}catch(e){return [];}}
+  function setWish(a){localStorage.setItem(WK,JSON.stringify(a));paintWish();}
+  function paintWish(){const b=document.getElementById('wishCount');if(b){const n=getWish().length;b.textContent=n;b.style.display=n?'grid':'none';}}
+  window.UNICORE.getWishlist=getWish;
+  window.UNICORE.inWishlist=id=>getWish().indexOf(+id)>-1;
+  window.UNICORE.wishCount=()=>getWish().length;
+  window.UNICORE.paintWish=paintWish;
+  window.UNICORE.toggleWishlist=function(id){id=+id;const a=getWish();const i=a.indexOf(id);let on;
+    if(i>-1){a.splice(i,1);on=false;toast('Removed from wishlist');}else{a.push(id);on=true;toast('Saved to wishlist ♥');}
+    setWish(a);return on;};
+
   /* ---------- toast ---------- */
   let tT;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.appendChild(el);}el.textContent=m;el.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>el.classList.remove('show'),1700);}
   window.UNICORE.toast=toast;
@@ -96,7 +109,7 @@
   <header class="nav"><div class="wrap">
     <a class="logo" href="index.html" aria-label="UNI&CORE home"><img class="logo-img" src="https://superhero.co.kr/unincore/images/common/logo.png" alt="UNI&CORE SEA"></a>
     <ul class="menu">
-      <li data-nav="products"><a href="products.html">SHOP</a><div class="submenu"><a href="products.html#skincare">Skincare</a><a href="products.html#healthcare">Healthcare</a><a href="products.html#living">Living</a><a href="products.html#package">Packages</a></div></li>
+      <li data-nav="products"><a href="products.html">SHOP</a><div class="submenu"><a href="products.html?cat=Skincare#shop">Skincare</a><a href="products.html?cat=Healthcare#shop">Healthcare</a><a href="products.html#shopee">Shopee Store</a><a href="products.html#living">Living</a><a href="products.html#package">Packages</a></div></li>
       <li data-nav="derma"><a href="derma.html">DERMA</a><div class="submenu"><a href="derma-qr.html" class="sub-feature">✦ Derma AI QR System</a><a href="derma.html#derma-10">Derma 10</a><a href="derma.html#derma-10-pro">Derma 10 Pro</a><a href="derma.html#derma-hand">Derma Hand Hybrid</a><a href="derma.html#derma-home">Derma Home</a></div></li>
       <li data-nav="ai"><a href="ai-analysis.html">AI ANALYSIS</a><div class="submenu"><a href="ai-analysis.html">Skin Analysis</a><a href="skin-quiz.html">Skin Quiz</a><a href="ai-analysis.html#recommend">Recommendations</a></div></li>
       <li data-nav="sub"><a href="subscription.html">SUBSCRIPTION</a><div class="submenu"><a href="subscription.html">Plans & Benefits</a><a href="rewards.html">Rewards</a><a href="subscription.html#faq">FAQ</a></div></li>
@@ -106,6 +119,7 @@
     </ul>
     <div class="nav-tools">
       <div class="lang" title="Language">EN ▾</div>
+      <a class="ic" href="wishlist.html" title="Wishlist" aria-label="Wishlist" style="position:relative"><svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/></svg><span id="wishCount" class="cart-badge" style="display:none">0</span></a>
       <a class="ic" href="cart.html" title="Cart" aria-label="Cart" style="position:relative"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6L5 3H2"/></svg><span id="cartCount" class="cart-badge" style="display:none">0</span></a>
       <a class="btn btn-green" style="height:42px;padding:0 20px;font-size:13.5px" href="ai-analysis.html">AI Analysis</a>
       <button class="hamb" id="hambBtn" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
@@ -150,6 +164,7 @@
     if(hamb&&drawer){hamb.addEventListener('click',()=>{drawer.classList.add('open');hamb.setAttribute('aria-expanded','true');});
       drawer.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>{drawer.classList.remove('open');hamb.setAttribute('aria-expanded','false');}));}
     paintBadge();
+    paintWish();
     mountChatbot();
     initTikTokPlayer();
   }
@@ -239,8 +254,9 @@
       const priceBlock = `<div class="p">${peso(p.php)} <small>${p.live?'Shopee':'Member'}</small></div>`;
       const badge = p.live ? `<span class="badge">On Shopee</span>` : `<span class="badge soon">New</span>`;
       const btn = `<button class="addcart" onclick="event.preventDefault();UNICORE.addToCart(${p.id})">Add to cart</button>`;
+      const wish = `<button class="wish-btn${getWish().indexOf(p.id)>-1?' on':''}" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on',UNICORE.toggleWishlist(${p.id}))" aria-label="Save to wishlist"><svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/></svg></button>`;
       return `<a class="prod" data-cat="${p.cat}" href="product-detail.html?id=${p.id}">
-        <div class="img">${badge}<span class="ph">${p.name.slice(0,16)}</span>
+        <div class="img">${badge}${wish}<span class="ph">${p.name.slice(0,16)}</span>
           <img src="${PIMG}${p.img}" alt="${p.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
         <div class="body"><div class="cat">${p.cat}</div><div class="nm">${p.name}</div>
           ${priceBlock}${btn}</div>
