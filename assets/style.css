@@ -791,6 +791,10 @@ a,button,input,textarea,select{outline-offset:3px}
 .pd-stickybar .sb-p{font-size:15px;font-weight:800;color:var(--green-d)}
 .pd-stickybar .btn{height:46px;white-space:nowrap}
 @media(max-width:760px){.pd-stickybar.show{display:flex}}
+/* mobile stacking for product-detail hero + cart (avoid cramped 2-column) */
+@media(max-width:820px){.cart{grid-template-columns:1fr;gap:28px}}
+@media(max-width:760px){.pd{grid-template-columns:1fr;gap:26px}.pd .pimg{max-width:440px;margin:0 auto}}
+@media(max-width:760px){.pd-buyrow{gap:10px}.pd-buyrow .btn{flex:1 1 auto}.citem .rm{margin-left:0}}
 
 /* ===================== v10 · detail FAQ + caution ===================== */
 .pd-faq{margin-top:54px;padding-top:46px;border-top:1px solid var(--line)}
