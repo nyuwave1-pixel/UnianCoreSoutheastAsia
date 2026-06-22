@@ -34,6 +34,11 @@
   <div class="shead reveal"><div class="k">You may also like</div><h2>Related products</h2></div>
   <div class="pgrid" id="related"></div>
 </div></section>
+
+<section class="section" id="recentSec" style="display:none"><div class="wrap">
+  <div class="shead reveal"><div class="k">Recently viewed</div><h2>Pick up where you left off</h2></div>
+  <div class="pgrid" id="recentGrid"></div>
+</div></section>
 </main>
 
 <div id="site-footer"></div>
@@ -212,6 +217,13 @@ host.innerHTML = rel.map(x=>{
     <img src="${UNICORE.PIMG}${x.img}" alt="${x.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
     <div class="body"><div class="cat">${x.cat}</div><div class="nm">${x.name}</div>${pb}</div></a>`;
 }).join('');
+
+// Recently viewed (excludes the current product), then record this visit
+if(p){
+  const rc = UNICORE.renderRecent('#recentGrid', id);
+  if(rc>0){ document.getElementById('recentSec').style.display=''; }
+  UNICORE.pushRecent(p.id);
+}
 </script>
 </body>
 </html>
