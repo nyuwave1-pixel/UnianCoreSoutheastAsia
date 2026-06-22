@@ -6,6 +6,15 @@
 (function(){
   const PIMG = 'https://us.unincore.com/uImage/product/';
   const SHOPEE = 'https://shopee.ph/mygameam.ph';
+  const SHOPEE_SHOP_ID = '1455818023';
+  /* Per-product Shopee deep links (Seller Centre integration).
+     Paste each product's exact Shopee URL here, keyed by product id, e.g.
+       11: 'https://shopee.ph/product/1455818023/<itemid>',
+     Until a direct URL is filled in, live products deep-link to an in-shop
+     search by product name (lands on the item inside the official store). */
+  const SHOPEE_ITEMS = {
+    // 11: '', 12: '', 15: '', 17: ''
+  };
 
   /* HQ catalog order (id 1-17). Pricing policy: PHP (₱).
      live=true → listed on Shopee now (real ₱ price); others → ₱ converted from member USD (₱66/$, aligned to Shopee listings) */
@@ -52,7 +61,15 @@
   const PT = {1:[140,58],2:[223,95],3:[126,54],4:[40,17],5:[77,33],6:[122,52],7:[52,22],8:[117,50],9:[85,35],10:[84,36],11:[58,25],12:[51,22],13:[141,59],14:[176,75],15:[176,75],16:[84,35],17:[141,60]};
   const peso = n => '₱'+Math.round(n).toLocaleString('en-US');
   const tiers = id => { const p=PRODUCTS.find(x=>x.id==id), t=PT[id]; if(!p||!t) return null; return { retail:Math.round(p.php*t[0]/p.usd), member:p.php, sub:Math.round(p.php*t[1]/p.usd) }; };
-  window.UNICORE = { PRODUCTS, DETAILS, PIMG, SHOPEE, peso, get:id=>PRODUCTS.find(p=>p.id==id), detail:id=>DETAILS[id], tiers };
+  window.UNICORE = { PRODUCTS, DETAILS, PIMG, SHOPEE, SHOPEE_SHOP_ID, peso, get:id=>PRODUCTS.find(p=>p.id==id), detail:id=>DETAILS[id], tiers };
+  /* resolve the best Shopee URL for a product (direct link > in-shop search > store) */
+  window.UNICORE.shopeeUrl = function(id){
+    if(SHOPEE_ITEMS[id]) return SHOPEE_ITEMS[id];
+    const p = PRODUCTS.find(x=>x.id==id);
+    if(p && p.live) return SHOPEE + '?searchKeyword=' + encodeURIComponent(p.name);
+    return SHOPEE;
+  };
+  window.UNICORE.liveProducts = ()=>PRODUCTS.filter(p=>p.live);
 
   /* ---------- cart (localStorage) ---------- */
   const CK='unicore_cart';
