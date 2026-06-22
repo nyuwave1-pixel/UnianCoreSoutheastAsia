@@ -119,6 +119,13 @@ else {
       <div class="pd-g"><div class="gi"><svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div><div><h4>Secure checkout</h4><p>Safe payment via the official Shopee store.</p></div></div>
     </div>`;
 
+  // ingredient / formula spotlight (English)
+  const spot = d.spot ? `
+    <div class="pd-spot reveal">
+      <div class="si"><svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 0-7 7c0 3 2 5 2 7h10c0-2 2-4 2-7a7 7 0 0 0-7-7z"/><path d="M9 21h6"/></svg></div>
+      <div><div class="st">Formula spotlight</div><h3>${d.spot[0]}</h3><p>${d.spot[1]}</p></div>
+    </div>` : '';
+
   // per-product FAQ + caution
   const faq = `
     <div class="pd-faq">
@@ -168,7 +175,7 @@ else {
         </div>
       </div>
     </div>
-    ${guarantee}${benefits}${conceptBand}${how}${subsave}${infoTable}${faq}${caution}`;
+    ${guarantee}${benefits}${spot}${conceptBand}${how}${subsave}${infoTable}${faq}${caution}`;
 
   // sticky mobile buy bar
   const bar=document.createElement('div');
