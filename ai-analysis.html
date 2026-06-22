@@ -6,6 +6,15 @@
 <meta name="theme-color" content="#FFFFFF" />
 <meta name="description" content="UNI&CORE AI Skin Analysis — analyze pores, wrinkles, pigmentation and moisture from a single selfie and get tailored recommendations." />
 <title>AI Skin Analysis — UNI&CORE</title>
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="UNI&CORE" />
+<meta property="og:title" content="AI Skin Analysis — UNI&CORE" />
+<meta property="og:description" content="Get your skin score, skin age and tailored product recommendations from a single selfie." />
+<meta property="og:image" content="https://superhero.co.kr/unincore/images/main/main_03.jpg" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="AI Skin Analysis — UNI&CORE" />
+<meta name="twitter:description" content="Get your skin score, skin age and tailored product recommendations from a single selfie." />
+<meta name="twitter:image" content="https://superhero.co.kr/unincore/images/main/main_03.jpg" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -30,12 +39,17 @@
 <!-- Uploader -->
 <section class="section"><div class="wrap" style="max-width:780px">
   <div class="uploader reveal" id="uploader" role="button" tabindex="0" aria-label="Upload selfie">
-    <svg viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v2M20 16v2a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>
-    <h3>Upload your selfie</h3>
-    <p>JPG · PNG · front-facing photo recommended · analysis takes ~10s</p>
-    <div style="margin-top:18px"><span class="btn btn-green" id="demoBtn">Run demo analysis →</span></div>
+    <input type="file" id="selfieInput" accept="image/*" hidden>
+    <img id="selfiePreview" alt="Your selfie preview" style="display:none;width:124px;height:124px;object-fit:cover;border-radius:50%;margin:0 auto 16px;box-shadow:var(--shadow-md);border:3px solid #fff">
+    <svg id="upIcon" viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 012-2h2M16 4h2a2 2 0 012 2v2M20 16v2a2 2 0 01-2 2h-2M8 20H6a2 2 0 01-2-2v-2"/><circle cx="12" cy="12" r="3.5"/></svg>
+    <h3 id="upTitle">Upload your selfie</h3>
+    <p id="upHint">JPG · PNG · front-facing photo recommended · analysis takes ~10s</p>
+    <div style="margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <span class="btn btn-green" id="chooseBtn">Choose photo</span>
+      <span class="btn btn-outline" id="demoBtn">Run demo instead →</span>
+    </div>
   </div>
-  <p style="text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px;font-weight:700">※ The demo shows sample results. The live service runs on OpenAI Vision.</p>
+  <p style="text-align:center;color:var(--muted);font-size:12.5px;margin-top:14px;font-weight:700">※ Your photo stays in your browser — nothing is uploaded. The demo shows sample results; the live service runs on AI Vision.</p>
 </div></section>
 
 <!-- Steps -->
@@ -103,8 +117,20 @@ const rEl=document.getElementById('report');
 const ro=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){runSkin();ro.disconnect();}}),{threshold:.3});
 ro.observe(rEl);
 function demo(){document.getElementById('report').scrollIntoView({behavior:'smooth'});setTimeout(runSkin,400);}
-document.getElementById('demoBtn').addEventListener('click',demo);
-document.getElementById('uploader').addEventListener('click',demo);
+const fileInput=document.getElementById('selfieInput');
+const preview=document.getElementById('selfiePreview');
+function openPicker(e){if(e)e.stopPropagation();fileInput.click();}
+document.getElementById('chooseBtn').addEventListener('click',openPicker);
+document.getElementById('uploader').addEventListener('click',openPicker);
+document.getElementById('demoBtn').addEventListener('click',e=>{e.stopPropagation();demo();});
+fileInput.addEventListener('change',()=>{
+  const f=fileInput.files&&fileInput.files[0];if(!f)return;
+  preview.src=URL.createObjectURL(f);preview.style.display='block';
+  document.getElementById('upIcon').style.display='none';
+  document.getElementById('upTitle').textContent='Analyzing your skin…';
+  document.getElementById('upHint').textContent='AI Vision is reading your photo (demo result)';
+  setTimeout(demo,800);
+});
 </script>
 </body>
 </html>
