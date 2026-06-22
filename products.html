@@ -87,6 +87,20 @@
   <div class="pgrid" id="catalog"></div>
 </div></section>
 
+<!-- Shopee official store -->
+<section class="section" id="shopee"><div class="wrap">
+  <div class="shopee-band reveal">
+    <div class="sb-l">
+      <div class="k"><svg viewBox="0 0 24 24"><path d="M6 7V6a6 6 0 0 1 12 0v1h3l-1.2 13.2A2 2 0 0 1 17.8 22H6.2a2 2 0 0 1-2-1.8L3 7h3zm2 0h8V6a4 4 0 0 0-8 0v1z"/></svg>Official Shopee Store</div>
+      <h2>Buy authentic UNI&CORE on Shopee</h2>
+      <p>Our live lineup is available now on the official UNI&amp;CORE SEA Shopee store — genuine HQ products, Philippine Peso pricing, secure Shopee checkout and tracked delivery from Korea.</p>
+    </div>
+    <a class="btn-shopee" href="https://shopee.ph/mygameam.ph" target="_blank" rel="noopener">Visit our Shopee store ↗</a>
+  </div>
+  <div class="shead reveal" style="margin-top:48px"><div class="k">Available now</div><h2>Shop these on Shopee</h2><p>Tap “Buy on Shopee” to purchase on the official store</p></div>
+  <div class="pgrid" id="shopeeGrid"></div>
+</div></section>
+
 <!-- Living / Package / Lounge (HQ copy) -->
 <section class="section alt" id="living"><div class="wrap">
   <div class="shead reveal"><div class="k">Living</div><h2>Living</h2><p>Eco-friendly household products</p></div>
@@ -137,6 +151,18 @@
   if(qCat && ['All','Skincare','Healthcare','Available'].includes(qCat)){state.cat=qCat;setChip(qCat);}
   apply();
   if(qCat){const sec=document.getElementById('shop');if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),120);}
+})();
+// Shopee official-store live products
+(function(){
+  const host=document.getElementById('shopeeGrid');if(!host||!window.UNICORE)return;
+  const live=UNICORE.liveProducts();
+  host.innerHTML=live.map(x=>`
+    <a class="prod in" href="product-detail.html?id=${x.id}"><div class="img"><span class="badge shopee">On Shopee</span><span class="ph">${x.name.slice(0,16)}</span>
+      <img src="${UNICORE.PIMG}${x.img}" alt="${x.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+      <div class="body"><div class="cat">${x.cat}</div><div class="nm">${x.name}</div>
+        <div class="p">${UNICORE.peso(x.php)} <small>Shopee</small></div>
+        <span class="buy-shopee" onclick="event.preventDefault();event.stopPropagation();window.open(UNICORE.shopeeUrl(${x.id}),'_blank','noopener')">Buy on Shopee ↗</span>
+      </div></a>`).join('');
 })();
 </script>
 </body>

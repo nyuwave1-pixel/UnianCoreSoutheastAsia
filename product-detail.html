@@ -57,7 +57,7 @@ else {
   const qtyUI = `<div class="pd-qty"><button type="button" onclick="pdQty(-1)" aria-label="Decrease quantity">&minus;</button><input id="pdQtyIn" type="number" value="1" min="1" max="99" inputmode="numeric" aria-label="Quantity"><button type="button" onclick="pdQty(1)" aria-label="Increase quantity">+</button></div>`;
   const buy = p.live
     ? `${qtyUI}<button class="btn btn-green" onclick="pdAdd(${p.id})">Add to cart →</button>
-       <a class="btn btn-dark" href="${UNICORE.SHOPEE}" target="_blank" rel="noopener">Buy on Shopee</a>`
+       <a class="btn btn-dark" href="${UNICORE.shopeeUrl(p.id)}" target="_blank" rel="noopener">Buy on Shopee ↗</a>`
     : `${qtyUI}<button class="btn btn-green" onclick="pdAdd(${p.id})">Add to cart →</button>
        <a class="btn btn-outline" href="ai-analysis.html">Get a recommendation</a>`;
   document.title = p.name + ' — UNI&CORE';
