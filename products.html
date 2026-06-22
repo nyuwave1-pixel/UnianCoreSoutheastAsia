@@ -63,6 +63,12 @@
 </section>
 <div class="wave wave-up" aria-hidden="true" style="background:#EBE3D6"><svg viewBox="0 0 1440 90" preserveAspectRatio="none"><path d="M0,52 C360,2 1080,92 1440,42 L1440,0 L0,0 Z" fill="#F6F6F3"/></svg></div>
 
+<!-- Recently viewed -->
+<section class="section" id="recentShop" style="display:none;padding-bottom:0"><div class="wrap">
+  <div class="shead reveal" style="text-align:left;margin-bottom:26px"><div class="k">Recently viewed</div><h2 style="font-size:clamp(24px,3vw,32px)">Pick up where you left off</h2></div>
+  <div class="pgrid" id="shopRecentGrid"></div>
+</div></section>
+
 <!-- All products · filter + sort -->
 <section class="section alt" id="shop"><div class="wrap">
   <div class="shead reveal"><div class="k">Shop All</div><h2>All Products</h2><p>Filter by category or sort by price — authentic HQ lineup, Shopee retail prices.</p></div>
@@ -151,6 +157,12 @@
   if(qCat && ['All','Skincare','Healthcare','Available'].includes(qCat)){state.cat=qCat;setChip(qCat);}
   apply();
   if(qCat){const sec=document.getElementById('shop');if(sec)setTimeout(()=>sec.scrollIntoView({behavior:'smooth',block:'start'}),120);}
+})();
+// Recently viewed strip (returning shoppers)
+(function(){
+  if(!window.UNICORE||!UNICORE.renderRecent)return;
+  const n=UNICORE.renderRecent('#shopRecentGrid');
+  if(n>0){const s=document.getElementById('recentShop');if(s)s.style.display='';}
 })();
 // Shopee official-store live products
 (function(){
