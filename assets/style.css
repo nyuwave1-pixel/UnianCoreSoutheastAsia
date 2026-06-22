@@ -836,3 +836,12 @@ a,button,input,textarea,select{outline-offset:3px}
 .csum-trust svg{width:15px;height:15px;stroke:var(--green-d);fill:none;stroke-width:2.2;flex-shrink:0}
 .csave{margin-top:14px;background:#fff;border:1px dashed var(--green);border-radius:12px;padding:13px 15px;font-size:12.5px;font-weight:700;color:var(--graphite);line-height:1.6}
 .csave a{color:var(--green-d);font-weight:800}
+
+/* ===================== v13 · ingredient/formula spotlight ===================== */
+.pd-spot{display:flex;gap:22px;align-items:center;margin-top:54px;background:var(--green-l);border-radius:18px;padding:clamp(24px,3vw,36px)}
+.pd-spot .si{width:64px;height:64px;border-radius:16px;background:#fff;display:grid;place-items:center;flex-shrink:0;box-shadow:var(--shadow-sm)}
+.pd-spot .si svg{width:32px;height:32px;stroke:var(--green-d);fill:none;stroke-width:1.6}
+.pd-spot .st{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--green-d);margin-bottom:6px}
+.pd-spot h3{font-family:var(--serif);font-weight:600;font-size:clamp(20px,2.4vw,27px);margin:0 0 8px;color:var(--ink);line-height:1.2}
+.pd-spot p{font-size:14.5px;color:var(--graphite);line-height:1.75;margin:0;max-width:64ch}
+@media(max-width:560px){.pd-spot{flex-direction:column;align-items:flex-start}}
