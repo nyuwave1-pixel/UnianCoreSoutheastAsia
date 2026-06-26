@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="robots" content="noindex" />
+<title>Login · Sign up — UNI&CORE</title>
+<meta property="og:title" content="Login · Sign up — UNI&CORE" />
+<meta property="og:description" content="Sign in to your UNI&CORE account — orders, wishlist, subscriptions and rewards." />
+<meta property="og:image" content="https://superhero.co.kr/unincore/images/main/main_02.jpg" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css" />
+</head>
+<body data-page="account">
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+<section class="page-hero">
+  <div class="bg" style="background-image:url('https://superhero.co.kr/unincore/images/main/main_02.jpg')"></div>
+  <div class="wrap"><div class="crumb"><a href="index.html">HOME</a> › ACCOUNT</div><div class="brandline">United power of uni&amp;core to the global</div><h1>Welcome to UNI&CORE</h1><p>Sign in to manage your orders, wishlist, subscriptions and rewards.</p></div>
+</section>
+
+<section class="section"><div class="wrap">
+  <div class="auth-wrap reveal">
+    <div class="auth-tabs">
+      <button id="tabLogin" class="on" type="button">Log in</button>
+      <button id="tabSignup" type="button">Sign up</button>
+    </div>
+
+    <div class="auth-card">
+      <div class="auth-msg" id="msg"></div>
+
+      <!-- Login -->
+      <form id="loginForm">
+        <h2>Log in</h2>
+        <div class="sub">Welcome back. Enter your details.</div>
+        <div class="field"><label for="lEmail">Email</label><input id="lEmail" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+        <div class="field"><label for="lPass">Password</label><input id="lPass" type="password" autocomplete="current-password" placeholder="Your password" required></div>
+        <button class="btn btn-green" type="submit" style="width:100%;margin-top:6px">Log in →</button>
+      </form>
+
+      <!-- Sign up -->
+      <form id="signupForm" style="display:none">
+        <h2>Create account</h2>
+        <div class="sub">Join UNI&CORE — it only takes a moment.</div>
+        <div class="field"><label for="sName">Name</label><input id="sName" type="text" autocomplete="name" placeholder="Your name" required></div>
+        <div class="field"><label for="sCountry">Country</label>
+          <select id="sCountry">
+            <option value="PH">Philippines</option>
+            <option value="TH">Thailand</option>
+            <option value="ID">Indonesia</option>
+            <option value="VN">Vietnam</option>
+            <option value="MY">Malaysia</option>
+          </select>
+        </div>
+        <div class="field"><label for="sEmail">Email</label><input id="sEmail" type="email" autocomplete="email" placeholder="you@example.com" required></div>
+        <div class="field"><label for="sPass">Password</label><input id="sPass" type="password" autocomplete="new-password" placeholder="At least 8 characters" required></div>
+        <button class="btn btn-green" type="submit" style="width:100%;margin-top:6px">Create account →</button>
+      </form>
+    </div>
+    <p class="auth-note" id="authNote"></p>
+  </div>
+</div></section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+const tabL=document.getElementById('tabLogin'),tabS=document.getElementById('tabSignup');
+const fL=document.getElementById('loginForm'),fS=document.getElementById('signupForm');
+const msg=document.getElementById('msg');
+function show(which){
+  const signup=which==='signup';
+  tabS.classList.toggle('on',signup);tabL.classList.toggle('on',!signup);
+  fS.style.display=signup?'':'none';fL.style.display=signup?'none':'';
+  msg.className='auth-msg';msg.textContent='';
+}
+tabL.addEventListener('click',()=>show('login'));
+tabS.addEventListener('click',()=>show('signup'));
+if(location.hash==='#signup')show('signup');
+function setMsg(text,kind){msg.textContent=text;msg.className='auth-msg '+kind;}
+function done(r){
+  if(r.ok){setMsg('Success! Redirecting…','ok');setTimeout(()=>location.href='account.html',700);}
+  else setMsg(r.err||'Something went wrong.','err');
+}
+fL.addEventListener('submit',async e=>{e.preventDefault();setMsg('Signing in…','ok');
+  done(await UNICORE.login(document.getElementById('lEmail').value,document.getElementById('lPass').value));});
+fS.addEventListener('submit',async e=>{e.preventDefault();setMsg('Creating your account…','ok');
+  done(await UNICORE.signup(document.getElementById('sName').value,document.getElementById('sEmail').value,document.getElementById('sPass').value,document.getElementById('sCountry').value));});
+// already signed in?
+window.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>{
+    if(window.UNICORE&&UNICORE.currentUser&&UNICORE.currentUser()){location.replace('account.html');return;}
+    const note=document.getElementById('authNote');
+    if(note&&window.UNICORE&&UNICORE.authMode&&UNICORE.authMode()==='demo')
+      note.textContent='Demo mode: accounts are stored on this device. Connect the admin backend to enable real accounts.';
+  },300);
+});
+</script>
+</body>
+</html>
