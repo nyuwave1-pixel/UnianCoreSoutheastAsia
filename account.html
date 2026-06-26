@@ -22,7 +22,7 @@
   .pf-row:last-child{border-bottom:0}
   .pf-row b{color:#2B2B2B}
   .pf-k{color:#8C8F8C;font-weight:700}
-  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
   @media(max-width:560px){.tiles{grid-template-columns:repeat(2,1fr)}}
   .tile{display:block;background:#fff;border:1px solid #ECEDEC;border-radius:14px;padding:18px;text-align:center;color:#2B2B2B;font-weight:800;transition:.15s}
   .tile:hover{border-color:#5C9A46;transform:translateY(-2px)}
@@ -62,7 +62,8 @@
         <div class="pf-row"><span class="pf-k">Email</span><b id="pfEmail">—</b></div>
         <div class="pf-row"><span class="pf-k">Member no.</span><b id="pfNo">—</b></div>
         <div class="pf-row"><span class="pf-k">Country</span><b id="pfCountry">—</b></div>
-        <button class="btn btn-line" id="btnLogout" style="width:100%;margin-top:16px">Sign out</button>
+        <a class="btn btn-green" href="account-edit.html" style="width:100%;margin-top:16px">Edit profile</a>
+        <button class="btn btn-line" id="btnLogout" style="width:100%;margin-top:10px">Sign out</button>
       </div>
 
       <div class="acct-card reveal" style="margin-top:18px">
@@ -75,6 +76,7 @@
     <!-- RIGHT: quick stats + lists -->
     <div>
       <div class="tiles reveal">
+        <a class="tile" href="orders.html"><span class="big" id="tOrders">🧾</span>Orders<small>history</small></a>
         <a class="tile" href="cart.html"><span class="big" id="tCart">0</span>Cart<small>items</small></a>
         <a class="tile" href="wishlist.html"><span class="big" id="tWish">0</span>Wishlist<small>saved</small></a>
         <a class="tile" href="subscription.html"><span class="big" id="tSub">★</span>Subscriptions<small>manage</small></a>
