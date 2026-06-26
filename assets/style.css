@@ -44,7 +44,7 @@ img{display:block;max-width:100%}
 .logo .mark i:nth-child(3){background:var(--charcoal)}
 .logo .word{font-weight:800;font-size:22px;letter-spacing:.5px;color:var(--graphite)}
 .logo .word b{color:var(--green)}
-.logo-img{height:50px;width:auto;display:block}
+.logo-img{height:50px;width:auto;aspect-ratio:228/86;display:block}
 @media(max-width:640px){.logo-img{height:42px}}
 
 /* ===== Header ===== */
