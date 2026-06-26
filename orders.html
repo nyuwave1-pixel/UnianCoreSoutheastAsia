@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#FFFFFF" />
+<meta name="robots" content="noindex" />
+<title>My orders — UNI&CORE</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect x='3' y='4' width='4' height='16' fill='%23A7A8A8'/%3E%3Crect x='10' y='4' width='4' height='16' fill='%235C9A46'/%3E%3Crect x='17' y='4' width='4' height='16' fill='%233A3A3A'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/style.css" />
+<style>
+  .ord-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:#fff}
+  .ord-table{width:100%;border-collapse:collapse;min-width:560px}
+  .ord-table th,.ord-table td{padding:15px 16px;text-align:left;border-bottom:1px solid var(--line);font-size:14px;vertical-align:top}
+  .ord-table th{background:var(--paper);font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+  .ord-table tr:last-child td{border-bottom:none}
+  .ord-no{font-weight:800;color:var(--ink)}
+  .ord-items{color:var(--graphite);font-size:13px;line-height:1.5}
+  .ord-total{font-weight:800;color:var(--ink);white-space:nowrap}
+  .ost{font-size:12px;font-weight:800;border-radius:999px;padding:4px 11px;display:inline-block;white-space:nowrap}
+  .ost.paid,.ost.completed,.ost.delivered{background:#EAF6E3;color:#2F7D1E}
+  .ost.pending,.ost.processing{background:#FFF4E0;color:#B5791F}
+  .ost.cancelled,.ost.canceled,.ost.refunded{background:#FDECEC;color:#C0392B}
+  .ost.shipped{background:#E7F0FB;color:#2A6BB0}
+  .ord-empty{text-align:center;padding:54px 20px;color:var(--muted);font-weight:700}
+  .ord-empty svg{width:52px;height:52px;stroke:var(--silver);fill:none;stroke-width:1.5;margin-bottom:14px}
+  .ord-empty h3{font-size:18px;color:var(--ink);margin-bottom:8px}
+</style>
+</head>
+<body data-page="account">
+<a class="skip" href="#main">Skip to content</a>
+<div id="site-header"></div>
+
+<main id="main">
+<section class="page-hero">
+  <div class="bg" style="background-image:url('https://superhero.co.kr/unincore/images/main/main_02.jpg')"></div>
+  <div class="wrap"><div class="crumb"><a href="index.html">HOME</a> › <a href="account.html">MY ACCOUNT</a> › ORDERS</div><div class="brandline">United power of uni&amp;core to the global</div><h1>My orders</h1><p>Your purchase history and order status.</p></div>
+</section>
+
+<section class="section"><div class="wrap">
+  <div class="shead reveal" style="text-align:left;margin-bottom:24px"><div class="k">Order history</div><h2>Your purchases</h2><p id="ordSub">Loading your orders…</p></div>
+  <div id="ordRoot"></div>
+  <div style="margin-top:26px;display:flex;gap:12px;flex-wrap:wrap"><a class="btn btn-outline" href="account.html">← Back to my account</a><a class="btn btn-green" href="products.html">Continue shopping →</a></div>
+</div></section>
+</main>
+
+<div id="site-footer"></div>
+<script src="assets/config.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function(){
+  function esc(s){return (s==null?'':String(s)).replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+  function money(v,cur){if(v==null||v==='')return '—';const n=Number(v);if(isNaN(n))return esc(v);
+    return (cur==='PHP'||!cur)?(UNICORE.peso?UNICORE.peso(n):('₱'+n.toLocaleString('en-US'))):(n.toLocaleString('en-US')+' '+cur);}
+  function when(d){if(!d)return '—';const t=new Date(d);return isNaN(t)?esc(d):t.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'});}
+  function itemsText(o){
+    const arr=o.items||o.lines||o.orderItems||[];
+    if(Array.isArray(arr)&&arr.length){return arr.map(it=>esc((it.name||it.productName||it.title||'Item'))+(it.qty||it.quantity?' ×'+(it.qty||it.quantity):'')).join(', ');}
+    return o.summary||o.itemSummary||'—';
+  }
+  function emptyState(note){
+    return `<div class="ord-empty"><svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7zM9 7a3 3 0 016 0"/></svg>
+      <h3>No orders yet</h3><p style="margin-bottom:6px">${note}</p></div>`;
+  }
+  function render(orders){
+    const root=document.getElementById('ordRoot'),sub=document.getElementById('ordSub');
+    if(!orders||!orders.length){
+      sub.textContent='No orders to show yet.';
+      root.innerHTML=emptyState('When you place an order it will appear here. Live products check out on the official Shopee store.');
+      return;
+    }
+    sub.textContent=orders.length+(orders.length===1?' order':' orders');
+    const rows=orders.map(o=>{
+      const no=esc(o.orderNo||o.orderNumber||o.id||o.code||'—');
+      const date=when(o.createdAt||o.date||o.orderedAt||o.placedAt);
+      const st=esc(o.status||o.state||'—');
+      const total=money(o.total??o.totalAmount??o.amount??o.grandTotal, o.currency||'PHP');
+      return `<tr><td class="ord-no">${no}</td><td>${date}</td><td class="ord-items">${itemsText(o)}</td>
+        <td><span class="ost ${st.toLowerCase()}">${st}</span></td><td class="ord-total">${total}</td></tr>`;
+    }).join('');
+    root.innerHTML=`<div class="ord-table-wrap"><table class="ord-table">
+      <thead><tr><th>Order</th><th>Date</th><th>Items</th><th>Status</th><th>Total</th></tr></thead>
+      <tbody>${rows}</tbody></table></div>`;
+  }
+  async function start(){
+    if(!window.UNICORE){setTimeout(start,60);return;}
+    const u=UNICORE.currentUser&&UNICORE.currentUser();
+    if(!u){location.replace('login.html');return;}
+    const demo=!(UNICORE.authMode&&UNICORE.authMode()==='admin');
+    if(demo){
+      document.getElementById('ordSub').textContent='Demo mode';
+      document.getElementById('ordRoot').innerHTML=emptyState('Order history appears once the member backend is connected. Purchases of live items are completed and tracked on the official <a href="https://shopee.ph/mygameam.ph" target="_blank" rel="noopener" style="color:var(--green-d);font-weight:800">Shopee store</a>.');
+      return;
+    }
+    try{const orders=await UNICORE.myOrders(); render(Array.isArray(orders)?orders:(orders&&orders.items)||[]);}
+    catch(e){document.getElementById('ordRoot').innerHTML=emptyState('Could not load your orders right now. Please try again later.');}
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
+</script>
+</body>
+</html>
