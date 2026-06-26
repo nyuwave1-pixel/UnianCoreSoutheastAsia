@@ -100,6 +100,28 @@
   window.UNICORE.getRecent=getRecent;
   window.UNICORE.pushRecent=function(id){id=+id;if(!id)return;let a=getRecent().filter(x=>x!==id);a.unshift(id);localStorage.setItem(RK,JSON.stringify(a.slice(0,8)));};
 
+  /* ---------- compare (localStorage) ---------- */
+  const CMK='unicore_compare';
+  function getCompare(){try{return (JSON.parse(localStorage.getItem(CMK))||[]).map(Number);}catch(e){return [];}}
+  function setCompare(a){localStorage.setItem(CMK,JSON.stringify(a));paintCompare();}
+  window.UNICORE.getCompare=getCompare;
+  window.UNICORE.inCompare=id=>getCompare().indexOf(+id)>-1;
+  window.UNICORE.clearCompare=function(){setCompare([]);};
+  window.UNICORE.toggleCompare=function(id){id=+id;const a=getCompare();const i=a.indexOf(id);let on;
+    if(i>-1){a.splice(i,1);on=false;}else{if(a.length>=4){toast('Compare up to 4 items');return false;}a.push(id);on=true;toast('Added to compare');}
+    setCompare(a);return on;};
+  function paintCompare(){
+    const ids=getCompare();let bar=document.getElementById('cmpBar');
+    if(!ids.length){if(bar)bar.classList.remove('show');return;}
+    if(!bar){bar=document.createElement('div');bar.id='cmpBar';bar.className='cmp-bar';document.body.appendChild(bar);}
+    const thumbs=ids.map(id=>{const p=UNICORE.get(id);return p?`<span class="cmp-th" title="${p.name.replace(/"/g,'')}"><img src="${PIMG}${p.img}" alt="" onerror="this.style.opacity=0"><button onclick="UNICORE.toggleCompare(${id})" aria-label="Remove">×</button></span>`:'';}).join('');
+    bar.innerHTML=`<div class="cmp-bar-in"><div class="cmp-lead"><b>Compare</b><span>${ids.length}/4 selected</span></div><div class="cmp-thumbs">${thumbs}</div>
+      <div class="cmp-actions"><button class="cmp-clear" onclick="UNICORE.clearCompare()">Clear</button>
+      <a class="btn btn-green cmp-go${ids.length<2?' dis':''}" href="${ids.length>=2?'compare.html':'javascript:void(0)'}">Compare (${ids.length}) →</a></div></div>`;
+    bar.classList.add('show');
+  }
+  window.UNICORE.paintCompare=paintCompare;
+
   /* ---------- toast ---------- */
   let tT;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.appendChild(el);}el.textContent=m;el.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>el.classList.remove('show'),1700);}
   window.UNICORE.toast=toast;
@@ -171,6 +193,7 @@
       drawer.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>{drawer.classList.remove('open');hamb.setAttribute('aria-expanded','false');}));}
     paintBadge();
     paintWish();
+    paintCompare();
     mountChatbot();
     initTikTokPlayer();
   }
@@ -263,11 +286,12 @@
     const badge = p.live ? `<span class="badge">On Shopee</span>` : `<span class="badge soon">New</span>`;
     const btn = `<button class="addcart" onclick="event.preventDefault();UNICORE.addToCart(${p.id})">Add to cart</button>`;
     const wish = `<button class="wish-btn${getWish().indexOf(p.id)>-1?' on':''}" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on',UNICORE.toggleWishlist(${p.id}))" aria-label="Save to wishlist"><svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/></svg></button>`;
+    const cmp = `<button class="cmp-btn${getCompare().indexOf(p.id)>-1?' on':''}" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on',UNICORE.toggleCompare(${p.id}))" aria-label="Add to compare"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L4 7m3-3l3 3M17 8v12m0 0l3-3m-3 3l-3-3"/></svg>Compare</button>`;
     return `<a class="prod" data-cat="${p.cat}" href="product-detail.html?id=${p.id}">
       <div class="img">${badge}${wish}<span class="ph">${p.name.slice(0,16)}</span>
         <img src="${PIMG}${p.img}" alt="${p.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
       <div class="body"><div class="cat">${p.cat}</div><div class="nm">${p.name}</div>
-        ${priceBlock}${btn}</div>
+        ${priceBlock}${btn}${cmp}</div>
     </a>`;
   }
   window.UNICORE.cardHTML=cardHTML;
