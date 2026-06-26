@@ -855,6 +855,15 @@ a,button,input,textarea,select{outline-offset:3px}
 .cmp-empty svg{width:54px;height:54px;stroke:var(--silver);fill:none;stroke-width:1.4;margin-bottom:16px}
 .cmp-empty h3{font-size:18px;color:var(--ink);margin-bottom:8px}
 
+/* ===================== v17 · detail image zoom + lightbox ===================== */
+.pd .pimg .pd-zoom{position:absolute;bottom:14px;right:14px;z-index:2;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.92);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);border:1px solid var(--line);color:var(--graphite);font-size:12px;font-weight:800;padding:8px 12px;border-radius:30px;pointer-events:none;transition:.25s}
+.pd .pimg .pd-zoom svg{width:14px;height:14px;stroke:var(--green-d);fill:none;stroke-width:2}
+.pd .pimg:hover .pd-zoom{background:#fff;transform:translateY(-2px)}
+.pd-lightbox{position:fixed;inset:0;z-index:200;background:rgba(18,20,16,.92);display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out;animation:lbin .2s ease}
+.pd-lightbox.show{display:flex}
+.pd-lightbox img{max-width:92vw;max-height:90vh;border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.55)}
+@keyframes lbin{from{opacity:0}to{opacity:1}}
+
 /* ===================== v10 · detail FAQ + caution ===================== */
 .pd-faq{margin-top:54px;padding-top:46px;border-top:1px solid var(--line)}
 .pd-faq .pd-h{margin-bottom:20px}

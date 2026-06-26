@@ -183,7 +183,24 @@
     </div>
   </div></footer>`;
 
+  function injectPerfSeo(){
+    // preconnect to image/asset CDNs (faster first paint)
+    ['https://us.unincore.com','https://superhero.co.kr','https://d8j0ntlcm91z4.cloudfront.net','https://ai-assistant.unincore.com'].forEach(host=>{
+      if(document.querySelector('link[data-pc="'+host+'"]'))return;
+      const l=document.createElement('link');l.rel='preconnect';l.href=host;l.crossOrigin='';l.setAttribute('data-pc',host);document.head.appendChild(l);
+    });
+    // Organization + WebSite structured data (once)
+    if(!document.getElementById('ld-org')){
+      const s=document.createElement('script');s.type='application/ld+json';s.id='ld-org';
+      s.textContent=JSON.stringify({"@context":"https://schema.org","@graph":[
+        {"@type":"Organization","name":"UNI&CORE","url":"https://nyuwave1-pixel.github.io/UnianCoreSoutheastAsia/","logo":"https://superhero.co.kr/unincore/images/common/logo.png","sameAs":["https://www.tiktok.com/@uni_n_core","https://shopee.ph/mygameam.ph","https://www.instagram.com/unincore.official/"]},
+        {"@type":"WebSite","name":"UNI&CORE","url":"https://nyuwave1-pixel.github.io/UnianCoreSoutheastAsia/"}
+      ]});
+      document.head.appendChild(s);
+    }
+  }
   function inject(){
+    injectPerfSeo();
     const h=document.getElementById('site-header'); if(h) h.innerHTML=headerHTML;
     const f=document.getElementById('site-footer'); if(f) f.innerHTML=footerHTML;
     const page=document.body.dataset.page;
@@ -289,7 +306,7 @@
     const cmp = `<button class="cmp-btn${getCompare().indexOf(p.id)>-1?' on':''}" onclick="event.preventDefault();event.stopPropagation();this.classList.toggle('on',UNICORE.toggleCompare(${p.id}))" aria-label="Add to compare"><svg viewBox="0 0 24 24"><path d="M7 16V4m0 0L4 7m3-3l3 3M17 8v12m0 0l3-3m-3 3l-3-3"/></svg>Compare</button>`;
     return `<a class="prod" data-cat="${p.cat}" href="product-detail.html?id=${p.id}">
       <div class="img">${badge}${wish}<span class="ph">${p.name.slice(0,16)}</span>
-        <img src="${PIMG}${p.img}" alt="${p.name}" loading="lazy" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
+        <img src="${PIMG}${p.img}" alt="${p.name}" loading="lazy" decoding="async" onload="this.previousElementSibling.style.display='none'" onerror="this.style.display='none'"></div>
       <div class="body"><div class="cat">${p.cat}</div><div class="nm">${p.name}</div>
         ${priceBlock}${btn}${cmp}</div>
     </a>`;
