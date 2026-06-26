@@ -89,6 +89,9 @@
   window.UNICORE.getWishlist=getWish;
   window.UNICORE.inWishlist=id=>getWish().indexOf(+id)>-1;
   window.UNICORE.wishCount=()=>getWish().length;
+  /* 사이트 상품ID ↔ 백엔드 SKU 매핑 (백엔드 카탈로그 시드 UC0001~ 와 일치). */
+  window.UNICORE.skuOf=function(id){const p=UNICORE.get&&UNICORE.get(id);return (p&&p.sku)||('UC'+String(+id).padStart(4,'0'));};
+  window.UNICORE.idFromSku=function(sku){const n=parseInt(String(sku).replace(/\D/g,''),10);return isNaN(n)?null:n;};
   window.UNICORE.paintWish=paintWish;
   window.UNICORE.toggleWishlist=function(id){id=+id;const a=getWish();const i=a.indexOf(id);let on;
     if(i>-1){a.splice(i,1);on=false;toast('Removed from wishlist');}else{a.push(id);on=true;toast('Saved to wishlist ♥');}
@@ -97,7 +100,7 @@
   function memberApiBase(){return (window.UNICORE.memberApiBase&&window.UNICORE.memberApiBase())||'';}
   function wishSync(id,on){
     const base=memberApiBase();if(!base)return;const t=UNICORE.authToken&&UNICORE.authToken();if(!t)return;
-    const sku=String(id);const h={'Content-Type':'application/json','Authorization':'Bearer '+t};
+    const sku=UNICORE.skuOf(id);const h={'Content-Type':'application/json','Authorization':'Bearer '+t};
     try{ if(on){fetch(base+'/wishlist',{method:'POST',headers:h,body:JSON.stringify({sku})});}
          else{fetch(base+'/wishlist/'+encodeURIComponent(sku),{method:'DELETE',headers:h});} }catch(e){}
   }
@@ -105,18 +108,36 @@
   window.UNICORE.pullWishlist=async function(){
     const base=memberApiBase();if(!base)return getWish();const t=UNICORE.authToken&&UNICORE.authToken();if(!t)return getWish();
     try{const r=await fetch(base+'/wishlist',{headers:{'Authorization':'Bearer '+t}});if(!r.ok)return getWish();
-      const d=await r.json().catch(()=>({}));const rows=(d&&d.data)||[];const serverIds=rows.map(x=>+x.sku).filter(n=>!isNaN(n));
+      const d=await r.json().catch(()=>({}));const rows=(d&&d.data)||[];const serverIds=rows.map(x=>UNICORE.idFromSku(x.sku)).filter(n=>n!=null);
       const merged=Array.from(new Set(getWish().concat(serverIds)));setWish(merged);return merged;}catch(e){return getWish();}
   };
   /* 체크아웃: 로그인 시 서버에 주문 생성(SKU=String(id)). 비로그인/AUTH_API無 → {ok:false,demo:true}. */
   window.UNICORE.checkout=async function(){
     const base=memberApiBase();const t=UNICORE.authToken&&UNICORE.authToken();
     if(!base||!t) return {ok:false,demo:true,err:'Please log in to place your order.'};
-    const cart=getCart();const items=Object.keys(cart).map(id=>({sku:String(id),quantity:+cart[id]||1})).filter(x=>x.quantity>0);
+    const cart=getCart();const items=Object.keys(cart).map(id=>({sku:UNICORE.skuOf(id),quantity:+cart[id]||1})).filter(x=>x.quantity>0);
     if(!items.length) return {ok:false,err:'Your cart is empty.'};
     try{const r=await fetch(base+'/checkout',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify({items})});
       const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Checkout failed.'};
       setCart({});return {ok:true,order:(d&&d.data)||null};}catch(e){return {ok:false,err:'Could not reach the server.'};}
+  };
+  /* 주문 결제 개시 → 게이트웨이 checkoutUrl 반환(리다이렉트형). */
+  window.UNICORE.payOrder=async function(orderId,redirectUrl){
+    const base=memberApiBase();const t=UNICORE.authToken&&UNICORE.authToken();
+    if(!base||!t||!orderId) return {ok:false,err:'Login & order required.'};
+    try{const r=await fetch(base+'/orders/'+encodeURIComponent(orderId)+'/pay',{method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},
+        body:JSON.stringify({redirectUrl:redirectUrl||location.origin+'/account.html'})});
+      const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Payment failed.'};
+      return {ok:true,checkoutUrl:(d&&d.data&&d.data.checkoutUrl)||'',status:(d&&d.data&&d.data.status)||''};}catch(e){return {ok:false,err:'Could not reach the server.'};}
+  };
+  /* 장바구니 → 주문생성 → 결제개시 (원스텝). checkoutUrl 있으면 리다이렉트. */
+  window.UNICORE.checkoutAndPay=async function(){
+    const c=await UNICORE.checkout();if(!c.ok)return c;
+    const oid=c.order&&c.order.id;if(!oid)return {ok:true,order:c.order};
+    const p=await UNICORE.payOrder(oid);
+    if(p.ok&&p.checkoutUrl){location.href=p.checkoutUrl;return {ok:true,redirect:true};}
+    return {ok:true,order:c.order,payment:p};
   };
 
   /* ---------- recently viewed (localStorage) ---------- */
