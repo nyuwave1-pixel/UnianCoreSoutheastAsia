@@ -92,7 +92,32 @@
   window.UNICORE.paintWish=paintWish;
   window.UNICORE.toggleWishlist=function(id){id=+id;const a=getWish();const i=a.indexOf(id);let on;
     if(i>-1){a.splice(i,1);on=false;toast('Removed from wishlist');}else{a.push(id);on=true;toast('Saved to wishlist ♥');}
-    setWish(a);return on;};
+    setWish(a);wishSync(id,on);return on;};
+  /* 서버 위시리스트 동기화 (로그인 + AUTH_API 시). SKU=String(id) (사이트 상품ID↔SKU). 비로그인은 로컬만. */
+  function memberApiBase(){return (window.UNICORE.memberApiBase&&window.UNICORE.memberApiBase())||'';}
+  function wishSync(id,on){
+    const base=memberApiBase();if(!base)return;const t=UNICORE.authToken&&UNICORE.authToken();if(!t)return;
+    const sku=String(id);const h={'Content-Type':'application/json','Authorization':'Bearer '+t};
+    try{ if(on){fetch(base+'/wishlist',{method:'POST',headers:h,body:JSON.stringify({sku})});}
+         else{fetch(base+'/wishlist/'+encodeURIComponent(sku),{method:'DELETE',headers:h});} }catch(e){}
+  }
+  /* 로그인 직후/페이지 로드 시 서버 위시를 로컬에 병합 */
+  window.UNICORE.pullWishlist=async function(){
+    const base=memberApiBase();if(!base)return getWish();const t=UNICORE.authToken&&UNICORE.authToken();if(!t)return getWish();
+    try{const r=await fetch(base+'/wishlist',{headers:{'Authorization':'Bearer '+t}});if(!r.ok)return getWish();
+      const d=await r.json().catch(()=>({}));const rows=(d&&d.data)||[];const serverIds=rows.map(x=>+x.sku).filter(n=>!isNaN(n));
+      const merged=Array.from(new Set(getWish().concat(serverIds)));setWish(merged);return merged;}catch(e){return getWish();}
+  };
+  /* 체크아웃: 로그인 시 서버에 주문 생성(SKU=String(id)). 비로그인/AUTH_API無 → {ok:false,demo:true}. */
+  window.UNICORE.checkout=async function(){
+    const base=memberApiBase();const t=UNICORE.authToken&&UNICORE.authToken();
+    if(!base||!t) return {ok:false,demo:true,err:'Please log in to place your order.'};
+    const cart=getCart();const items=Object.keys(cart).map(id=>({sku:String(id),quantity:+cart[id]||1})).filter(x=>x.quantity>0);
+    if(!items.length) return {ok:false,err:'Your cart is empty.'};
+    try{const r=await fetch(base+'/checkout',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify({items})});
+      const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Checkout failed.'};
+      setCart({});return {ok:true,order:(d&&d.data)||null};}catch(e){return {ok:false,err:'Could not reach the server.'};}
+  };
 
   /* ---------- recently viewed (localStorage) ---------- */
   const RK='unicore_recent';
@@ -122,6 +147,93 @@
   }
   window.UNICORE.paintCompare=paintCompare;
 
+  /* ---------- account / auth ----------
+     ADMIN INTEGRATION: set AUTH_API to the admin's auth base URL to use the
+     real backend. Expected endpoints (JSON):
+       POST {AUTH_API}/login    {email,password}          -> {token,name}
+       POST {AUTH_API}/register {name,email,password}      -> {token,name}
+     On non-2xx, return {message:"..."} for the error text.
+     While AUTH_API is empty, a client-side DEMO (localStorage) is used so the
+     UI works end-to-end; switching to the admin needs only this one constant. */
+  /* UNI&CORE 어드민 백엔드(MemberAuth) 연동.
+     설정: assets/config.js 에서 window.UNICORE_CONFIG = { AUTH_API, AUTH_COUNTRY }.
+       AUTH_API     = '<backend>/api/v1/member-auth'  (예: http://localhost:4000/api/v1/member-auth)
+       AUTH_COUNTRY = 'PH'|'TH'|'ID'|'VN'|'MY'         (가입 기본 국가; 폼에서 선택 시 우선)
+     백엔드 응답 규약:
+       POST {AUTH_API}/login  {identifier,password}                 -> {data:{member,accessToken,refreshToken}}
+       POST {AUTH_API}/signup {countryIso2,fullName,email,password} -> {data:{member,accessToken,refreshToken}}
+     AUTH_API 미설정 시 데모(localStorage)로 동작. */
+  const CFG = (window.UNICORE_CONFIG||{});
+  const AUTH_API = CFG.AUTH_API || '';
+  const DEFAULT_COUNTRY = CFG.AUTH_COUNTRY || 'PH';
+  const UK='unicore_users', SK='unicore_session';
+  function getUsers(){try{return JSON.parse(localStorage.getItem(UK))||{};}catch(e){return {};}}
+  function hashPw(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return 'h'+(h>>>0).toString(36);}
+  function setSession(o){localStorage.setItem(SK,JSON.stringify(o));paintAuth();}
+  window.UNICORE.currentUser=function(){try{return JSON.parse(localStorage.getItem(SK))||null;}catch(e){return null;}};
+  window.UNICORE.authToken=function(){const s=UNICORE.currentUser();return s&&s.token||'';};
+  /* 회원 셀프서비스(member-me) 베이스: AUTH_API(.../member-auth) → .../member */
+  window.UNICORE.memberApiBase=function(){return AUTH_API?AUTH_API.replace(/\/member-auth$/,'/member'):'';};
+  window.UNICORE.logout=function(){localStorage.removeItem(SK);paintAuth();};
+  /* 서버에서 현재 회원 검증/갱신 (account 페이지 등). AUTH_API 없으면 로컬 세션 반환. */
+  window.UNICORE.me=async function(){
+    const s=UNICORE.currentUser();
+    if(!AUTH_API) return s;
+    const t=s&&s.token; if(!t) return null;
+    try{const r=await fetch(AUTH_API+'/me',{headers:{Authorization:'Bearer '+t}});
+      if(r.status===401){UNICORE.logout();return null;}
+      if(!r.ok) return s;
+      const d=await r.json().catch(()=>({}));const m=(d&&d.data)||{};
+      const merged=Object.assign({},s,{name:m.fullName||s.name,email:m.email||s.email,
+        memberNo:m.memberNo||s.memberNo,country:m.country||s.country,gradeCode:m.gradeCode||s.gradeCode});
+      localStorage.setItem(SK,JSON.stringify(merged));return merged;
+    }catch(e){return s;}
+  };
+  /* 회원 셀프서비스 (account 페이지). AUTH_API 없으면 null. */
+  async function authGet(path){
+    if(!AUTH_API) return null; const t=UNICORE.authToken(); if(!t) return null;
+    try{const r=await fetch(AUTH_API+path,{headers:{Authorization:'Bearer '+t}});
+      if(!r.ok) return null; const d=await r.json().catch(()=>({})); return (d&&d.data!==undefined)?d.data:d;
+    }catch(e){return null;}
+  }
+  window.UNICORE.myMileage=()=>authGet('/me/mileage');
+  window.UNICORE.myWallet=()=>authGet('/me/wallet');
+  window.UNICORE.myOrders=()=>authGet('/me/orders');
+  function applyAuthData(d,fallbackEmail,fallbackName){
+    const data=(d&&d.data)||d||{};const m=data.member||{};
+    setSession({email:fallbackEmail,name:m.fullName||fallbackName||fallbackEmail,memberNo:m.memberNo||'',
+      country:m.country||'',token:data.accessToken||'',refreshToken:data.refreshToken||''});
+  }
+  window.UNICORE.signup=async function(name,email,password,country){
+    name=(name||'').trim();email=(email||'').trim().toLowerCase();
+    if(!name||!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)||!password) return {ok:false,err:'Please enter a valid name, email and password.'};
+    if(password.length<8) return {ok:false,err:'Password must be at least 8 characters.'};
+    if(AUTH_API){try{const r=await fetch(AUTH_API+'/signup',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({countryIso2:(country||DEFAULT_COUNTRY),fullName:name,email,password})});
+      const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Sign up failed.'};
+      applyAuthData(d,email,name);return {ok:true};}catch(e){return {ok:false,err:'Could not reach the server.'};}}
+    const u=getUsers();if(u[email])return {ok:false,err:'An account with this email already exists.'};
+    u[email]={name,pw:hashPw(password)};localStorage.setItem(UK,JSON.stringify(u));setSession({email,name});return {ok:true,demo:true};
+  };
+  window.UNICORE.login=async function(email,password){
+    email=(email||'').trim().toLowerCase();
+    if(!email||!password) return {ok:false,err:'Please enter your email and password.'};
+    if(AUTH_API){try{const r=await fetch(AUTH_API+'/login',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({identifier:email,password})});
+      const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Incorrect email or password.'};
+      applyAuthData(d,email);return {ok:true};}catch(e){return {ok:false,err:'Could not reach the server.'};}}
+    const u=getUsers();if(!u[email]||u[email].pw!==hashPw(password))return {ok:false,err:'Incorrect email or password.'};
+    setSession({email,name:u[email].name});return {ok:true,demo:true};
+  };
+  window.UNICORE.authMode=function(){return AUTH_API?'admin':'demo';};
+  function paintAuth(){const u=UNICORE.currentUser();
+    const a=document.getElementById('acctLink');const n=document.getElementById('acctName');
+    if(a){a.href=u?'account.html':'login.html';a.title=u?u.name:'Login';}
+    if(n)n.textContent=u?(u.name||'').split(' ')[0]:'';
+    document.querySelectorAll('[data-auth-name]').forEach(el=>el.textContent=u?u.name:'');
+  }
+  window.UNICORE.paintAuth=paintAuth;
+
   /* ---------- toast ---------- */
   let tT;function toast(m){let el=document.getElementById('toast');if(!el){el=document.createElement('div');el.id='toast';el.className='toast';document.body.appendChild(el);}el.textContent=m;el.classList.add('show');clearTimeout(tT);tT=setTimeout(()=>el.classList.remove('show'),1700);}
   window.UNICORE.toast=toast;
@@ -132,7 +244,7 @@
     <a href="support.html">Business center</a><span class="sep"></span>
     <a href="support.html">FAQ</a><span class="sep"></span>
     <a href="${SHOPEE}" target="_blank" rel="noopener">Shopee</a><span class="sep"></span>
-    <a href="#">Login</a><span class="sep"></span><a href="#">Sign up</a>
+    <a href="login.html">Login</a><span class="sep"></span><a href="login.html#signup">Sign up</a>
   </div></div>
   <header class="nav"><div class="wrap">
     <a class="logo" href="index.html" aria-label="UNI&CORE home"><img class="logo-img" src="https://superhero.co.kr/unincore/images/common/logo.png" alt="UNI&CORE SEA"></a>
@@ -147,6 +259,7 @@
     </ul>
     <div class="nav-tools">
       <div class="lang" title="Language">EN ▾</div>
+      <a class="ic acct" id="acctLink" href="login.html" title="Login" aria-label="Account"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg><span id="acctName" class="acct-name"></span></a>
       <a class="ic" href="wishlist.html" title="Wishlist" aria-label="Wishlist" style="position:relative"><svg viewBox="0 0 24 24"><path d="M19 14c1.5-1.5 3-3.3 3-5.5A3.5 3.5 0 0 0 12 6 3.5 3.5 0 0 0 2 8.5c0 2.2 1.5 4 3 5.5l7 7z"/></svg><span id="wishCount" class="cart-badge" style="display:none">0</span></a>
       <a class="ic" href="cart.html" title="Cart" aria-label="Cart" style="position:relative"><svg viewBox="0 0 24 24"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M6 6L5 3H2"/></svg><span id="cartCount" class="cart-badge" style="display:none">0</span></a>
       <a class="btn btn-green" style="height:42px;padding:0 20px;font-size:13.5px" href="ai-analysis.html">AI Analysis</a>
@@ -160,7 +273,7 @@
       <nav class="dnav">
         <a href="products.html">SHOP</a><a href="derma.html">DERMA SERIES</a><a href="ai-analysis.html">AI ANALYSIS</a><a href="skin-quiz.html">Skin Quiz</a>
         <a href="subscription.html">SUBSCRIPTION</a><a href="rewards.html">Rewards</a><a href="about.html">STORY</a><a href="community.html">COMMUNITY</a>
-        <a href="support.html">SUPPORT</a><a href="cart.html">Cart</a><a class="sub" href="#">Login · Sign up</a>
+        <a href="support.html">SUPPORT</a><a href="cart.html">Cart</a><a class="sub" href="login.html">Login · Sign up</a>
       </nav>
     </div>
   </div>`;
@@ -211,6 +324,7 @@
     paintBadge();
     paintWish();
     paintCompare();
+    paintAuth();
     mountChatbot();
     initTikTokPlayer();
   }
