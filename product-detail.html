@@ -41,6 +41,8 @@
 </div></section>
 </main>
 
+<div id="pdLightbox" class="pd-lightbox" onclick="this.classList.remove('show')"><img id="pdLightImg" src="" alt="Product image enlarged"></div>
+
 <div id="site-footer"></div>
 <script src="assets/app.js"></script>
 <script>
@@ -172,7 +174,7 @@ else {
   root.innerHTML = `
     <div class="crumb" style="font-size:12.5px;font-weight:700;color:#8C8F8C;margin-bottom:20px"><a href="index.html" style="color:#8C8F8C">HOME</a> › <a href="products.html" style="color:#8C8F8C">SHOP</a> › ${p.cat}</div>
     <div class="pd">
-      <div class="pimg reveal"><img src="${UNICORE.PIMG}${p.img}" alt="${p.name}" onerror="this.style.display='none'"></div>
+      <div class="pimg reveal" style="position:relative"><img src="${UNICORE.PIMG}${p.img}" alt="${p.name}" style="cursor:zoom-in" onclick="openLightbox(this.src)" onerror="this.style.display='none'"><span class="pd-zoom"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3M11 8v6M8 11h6"/></svg>Tap to zoom</span></div>
       <div class="pinfo reveal">
         <span class="pill">${p.live?'BEST · On Shopee':'New'}</span>
         <div class="cat">${p.cat}</div>
@@ -223,6 +225,19 @@ if(p){
   const rc = UNICORE.renderRecent('#recentGrid', id);
   if(rc>0){ document.getElementById('recentSec').style.display=''; }
   UNICORE.pushRecent(p.id);
+}
+
+// image lightbox
+function openLightbox(src){const lb=document.getElementById('pdLightbox');if(!lb)return;document.getElementById('pdLightImg').src=src;lb.classList.add('show');}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){const lb=document.getElementById('pdLightbox');if(lb)lb.classList.remove('show');}});
+
+// Product structured data (JSON-LD for rich results)
+if(p){
+  const dd=UNICORE.detail(p.id)||{}; const info=dd.info||{};
+  const ld={"@context":"https://schema.org/","@type":"Product",name:p.name,image:UNICORE.PIMG+p.img,description:(dd.long||p.desc),category:p.cat,brand:{"@type":"Brand",name:"UNI&CORE"}};
+  if(info['Product code'])ld.sku=info['Product code'];
+  ld.offers={"@type":"Offer",priceCurrency:"PHP",price:String(p.php),availability:p.live?"https://schema.org/InStock":"https://schema.org/PreOrder",url:location.href};
+  const s=document.createElement('script');s.type='application/ld+json';s.textContent=JSON.stringify(ld);document.head.appendChild(s);
 }
 </script>
 </body>
