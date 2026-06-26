@@ -62,6 +62,8 @@
         <div class="pf-row"><span class="pf-k">Email</span><b id="pfEmail">—</b></div>
         <div class="pf-row"><span class="pf-k">Member no.</span><b id="pfNo">—</b></div>
         <div class="pf-row"><span class="pf-k">Country</span><b id="pfCountry">—</b></div>
+        <div class="pf-row"><span class="pf-k">Phone</span><b id="pfPhone">—</b></div>
+        <div class="pf-row"><span class="pf-k">Address</span><b id="pfAddr" style="text-align:right;max-width:62%">—</b></div>
         <a class="btn btn-green" href="account-edit.html" style="width:100%;margin-top:16px">Edit profile</a>
         <button class="btn btn-line" id="btnLogout" style="width:100%;margin-top:10px">Sign out</button>
       </div>
@@ -120,6 +122,9 @@
     document.getElementById('pfEmail').textContent=u.email||'—';
     document.getElementById('pfNo').textContent=u.memberNo||'—';
     document.getElementById('pfCountry').textContent=(u.country||'').toString().toUpperCase()||'—';
+    document.getElementById('pfPhone').textContent=u.phone||'—';
+    var _addr=[u.addressLine1,u.addressLine2,u.city,u.region,u.postalCode].filter(Boolean).join(', ');
+    document.getElementById('pfAddr').textContent=_addr||'—';
 
     // sync tag (admin-linked vs demo)
     const live=UNICORE.authMode&&UNICORE.authMode()==='admin';

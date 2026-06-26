@@ -40,7 +40,20 @@
           </select>
         </div>
         <div class="field"><label for="ePhone">Phone <span style="color:var(--muted);font-weight:700">(optional)</span></label><input id="ePhone" type="tel" autocomplete="tel" placeholder="e.g. +63 9XX XXX XXXX"></div>
+        <div class="field" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><label for="eBirth">Date of birth</label><input id="eBirth" type="date"></div>
+          <div><label for="eGender">Gender</label><select id="eGender"><option value="">Prefer not to say</option><option value="F">Female</option><option value="M">Male</option><option value="O">Other</option></select></div>
+        </div>
         <div class="field"><label>Email</label><input id="eEmail" type="email" disabled style="background:var(--paper);color:var(--muted)"></div>
+
+        <div style="border-top:1px solid var(--line);margin:8px 0 16px;padding-top:18px"><b style="font-size:15px">Shipping address</b><span style="color:var(--muted);font-weight:700;font-size:12px;margin-left:8px">used at checkout</span></div>
+        <div class="field"><label for="eAddr1">Address line 1</label><input id="eAddr1" type="text" autocomplete="address-line1" placeholder="House / street address"></div>
+        <div class="field"><label for="eAddr2">Address line 2 <span style="color:var(--muted);font-weight:700">(optional)</span></label><input id="eAddr2" type="text" autocomplete="address-line2" placeholder="Unit, building, landmark"></div>
+        <div class="field" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div><label for="eCity">City</label><input id="eCity" type="text" autocomplete="address-level2"></div>
+          <div><label for="eRegion">Region / Province</label><input id="eRegion" type="text" autocomplete="address-level1"></div>
+        </div>
+        <div class="field"><label for="ePostal">Postal code</label><input id="ePostal" type="text" autocomplete="postal-code" inputmode="numeric" style="max-width:220px"></div>
         <button class="btn btn-green" type="submit" style="width:100%;margin-top:6px">Save changes</button>
       </form>
     </div>
@@ -72,9 +85,10 @@
     if(!window.UNICORE){setTimeout(start,60);return;}
     const u=UNICORE.currentUser&&UNICORE.currentUser();
     if(!u){location.replace('login.html');return;}
-    document.getElementById('eName').value=u.name||'';
-    document.getElementById('eEmail').value=u.email||'';
-    document.getElementById('ePhone').value=u.phone||'';
+    const setv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v==null?'':v;};
+    setv('eName',u.name);setv('eEmail',u.email);setv('ePhone',u.phone);
+    setv('eBirth',u.birthDate);setv('eGender',u.gender);
+    setv('eAddr1',u.addressLine1);setv('eAddr2',u.addressLine2);setv('eCity',u.city);setv('eRegion',u.region);setv('ePostal',u.postalCode);
     if(u.country){const sel=document.getElementById('eCountry');if([...sel.options].some(o=>o.value===u.country))sel.value=u.country;}
     if(UNICORE.authMode&&UNICORE.authMode()==='demo')
       document.getElementById('editNote').textContent='Demo mode: changes are saved on this device. Connect the admin backend for server-side accounts.';
@@ -83,7 +97,10 @@
 
     document.getElementById('profileForm').addEventListener('submit',async function(e){
       e.preventDefault();msg('pMsg','Saving…','ok');
-      const r=await UNICORE.updateProfile({fullName:document.getElementById('eName').value.trim(),country:document.getElementById('eCountry').value,phone:document.getElementById('ePhone').value.trim()});
+      const g=id=>{const el=document.getElementById(id);return el?(el.value||'').trim():'';};
+      const r=await UNICORE.updateProfile({fullName:g('eName'),country:g('eCountry'),phone:g('ePhone'),
+        birthDate:g('eBirth'),gender:g('eGender'),addressLine1:g('eAddr1'),addressLine2:g('eAddr2'),
+        city:g('eCity'),region:g('eRegion'),postalCode:g('ePostal')});
       msg('pMsg', r.ok?'Profile updated.':(r.err||'Could not save.'), r.ok?'ok':'err');
     });
 
