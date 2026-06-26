@@ -207,6 +207,7 @@
       const d=await r.json().catch(()=>({}));const m=(d&&d.data)||{};
       const merged=Object.assign({},s,{name:m.fullName||s.name,email:m.email||s.email,
         memberNo:m.memberNo||s.memberNo,country:m.country||s.country,gradeCode:m.gradeCode||s.gradeCode});
+      ['phone','addressLine1','addressLine2','city','region','postalCode','birthDate','gender'].forEach(k=>{if(m[k]!=null)merged[k]=m[k];});
       localStorage.setItem(SK,JSON.stringify(merged));return merged;
     }catch(e){return s;}
   };
@@ -234,11 +235,14 @@
     if(AUTH_API){const r=await authSend('PATCH','/me',patch); if(!r)return {ok:false,err:'Please sign in again.'};
       if(!r.ok)return {ok:false,err:r.err||r.message||'Could not update your profile.'};
       const s=UNICORE.currentUser()||{};const m=(r.data&&r.data.member)||r.data||{};
-      setSession(Object.assign({},s,{name:m.fullName||patch.fullName||s.name,country:m.country||patch.country||s.country,phone:m.phone||patch.phone||s.phone}));
+      const pm=Object.assign({},patch); if(pm.fullName!=null){pm.name=pm.fullName;delete pm.fullName;}
+      const mm={}; if(m.fullName)mm.name=m.fullName; ['phone','country','addressLine1','addressLine2','city','region','postalCode','birthDate','gender','memberNo'].forEach(k=>{if(m[k]!=null)mm[k]=m[k];});
+      setSession(Object.assign({},s,pm,mm));
       return {ok:true};}
     const s=UNICORE.currentUser(); if(!s) return {ok:false,err:'Please sign in again.'};
-    const merged=Object.assign({},s,patch.fullName?{name:patch.fullName}:{},patch.country?{country:patch.country}:{},patch.phone?{phone:patch.phone}:{});
-    const u=getUsers(); if(u[s.email]){u[s.email].name=merged.name;u[s.email].country=merged.country;u[s.email].phone=merged.phone;localStorage.setItem(UK,JSON.stringify(u));}
+    const pm=Object.assign({},patch); if(pm.fullName!=null){pm.name=pm.fullName;delete pm.fullName;}
+    const merged=Object.assign({},s,pm);
+    const u=getUsers(); if(u[s.email]){const pw=u[s.email].pw; u[s.email]=Object.assign({},u[s.email],pm); u[s.email].pw=pw; delete u[s.email].email; localStorage.setItem(UK,JSON.stringify(u));}
     setSession(merged); return {ok:true,demo:true};
   };
   window.UNICORE.changePassword=async function(current,next){
@@ -251,8 +255,10 @@
   };
   function applyAuthData(d,fallbackEmail,fallbackName){
     const data=(d&&d.data)||d||{};const m=data.member||{};
-    setSession({email:fallbackEmail,name:m.fullName||fallbackName||fallbackEmail,memberNo:m.memberNo||'',
-      country:m.country||'',token:data.accessToken||'',refreshToken:data.refreshToken||''});
+    const sess={email:m.email||fallbackEmail,name:m.fullName||fallbackName||fallbackEmail,memberNo:m.memberNo||'',
+      country:m.country||'',token:data.accessToken||'',refreshToken:data.refreshToken||''};
+    ['phone','addressLine1','addressLine2','city','region','postalCode','birthDate','gender','gradeCode'].forEach(k=>{if(m[k]!=null)sess[k]=m[k];});
+    setSession(sess);
   }
   window.UNICORE.signup=async function(name,email,password,country){
     name=(name||'').trim();email=(email||'').trim().toLowerCase();
@@ -263,7 +269,7 @@
       const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Sign up failed.'};
       applyAuthData(d,email,name);return {ok:true};}catch(e){return {ok:false,err:'Could not reach the server.'};}}
     const u=getUsers();if(u[email])return {ok:false,err:'An account with this email already exists.'};
-    u[email]={name,pw:hashPw(password)};localStorage.setItem(UK,JSON.stringify(u));setSession({email,name});return {ok:true,demo:true};
+    u[email]={name,country,pw:hashPw(password)};localStorage.setItem(UK,JSON.stringify(u));setSession({email,name,country});return {ok:true,demo:true};
   };
   window.UNICORE.login=async function(email,password){
     email=(email||'').trim().toLowerCase();
@@ -273,7 +279,7 @@
       const d=await r.json().catch(()=>({}));if(!r.ok)return {ok:false,err:(d&&d.message)||'Incorrect email or password.'};
       applyAuthData(d,email);return {ok:true};}catch(e){return {ok:false,err:'Could not reach the server.'};}}
     const u=getUsers();if(!u[email]||u[email].pw!==hashPw(password))return {ok:false,err:'Incorrect email or password.'};
-    setSession({email,name:u[email].name});return {ok:true,demo:true};
+    {const {pw,...prof}=u[email];setSession(Object.assign({email},prof));}return {ok:true,demo:true};
   };
   window.UNICORE.authMode=function(){return AUTH_API?'admin':'demo';};
   function paintAuth(){const u=UNICORE.currentUser();
