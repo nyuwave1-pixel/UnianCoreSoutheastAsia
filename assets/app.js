@@ -220,6 +220,35 @@
   window.UNICORE.myMileage=()=>authGet('/me/mileage');
   window.UNICORE.myWallet=()=>authGet('/me/wallet');
   window.UNICORE.myOrders=()=>authGet('/me/orders');
+  /* member self-service mutations (admin API; demo fallback to localStorage).
+     PATCH {AUTH_API}/me {fullName,country,phone}     -> {data:{member}}
+     POST  {AUTH_API}/me/change-password {currentPassword,newPassword} */
+  async function authSend(method,path,body){
+    if(!AUTH_API) return null; const t=UNICORE.authToken&&UNICORE.authToken(); if(!t) return null;
+    try{const r=await fetch(AUTH_API+path,{method,headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:body?JSON.stringify(body):undefined});
+      const d=await r.json().catch(()=>({})); return {ok:r.ok,status:r.status,data:(d&&d.data!==undefined)?d.data:d,message:d&&d.message};
+    }catch(e){return {ok:false,err:'Could not reach the server.'};}
+  }
+  window.UNICORE.updateProfile=async function(patch){
+    patch=patch||{};
+    if(AUTH_API){const r=await authSend('PATCH','/me',patch); if(!r)return {ok:false,err:'Please sign in again.'};
+      if(!r.ok)return {ok:false,err:r.err||r.message||'Could not update your profile.'};
+      const s=UNICORE.currentUser()||{};const m=(r.data&&r.data.member)||r.data||{};
+      setSession(Object.assign({},s,{name:m.fullName||patch.fullName||s.name,country:m.country||patch.country||s.country,phone:m.phone||patch.phone||s.phone}));
+      return {ok:true};}
+    const s=UNICORE.currentUser(); if(!s) return {ok:false,err:'Please sign in again.'};
+    const merged=Object.assign({},s,patch.fullName?{name:patch.fullName}:{},patch.country?{country:patch.country}:{},patch.phone?{phone:patch.phone}:{});
+    const u=getUsers(); if(u[s.email]){u[s.email].name=merged.name;u[s.email].country=merged.country;u[s.email].phone=merged.phone;localStorage.setItem(UK,JSON.stringify(u));}
+    setSession(merged); return {ok:true,demo:true};
+  };
+  window.UNICORE.changePassword=async function(current,next){
+    if(!next||next.length<8) return {ok:false,err:'New password must be at least 8 characters.'};
+    if(AUTH_API){const r=await authSend('POST','/me/change-password',{currentPassword:current,newPassword:next}); if(!r)return {ok:false,err:'Please sign in again.'};
+      if(!r.ok)return {ok:false,err:r.err||r.message||'Could not change your password.'}; return {ok:true};}
+    const s=UNICORE.currentUser(); if(!s) return {ok:false,err:'Please sign in again.'};
+    const u=getUsers(); if(!u[s.email]||u[s.email].pw!==hashPw(current)) return {ok:false,err:'Your current password is incorrect.'};
+    u[s.email].pw=hashPw(next); localStorage.setItem(UK,JSON.stringify(u)); return {ok:true,demo:true};
+  };
   function applyAuthData(d,fallbackEmail,fallbackName){
     const data=(d&&d.data)||d||{};const m=data.member||{};
     setSession({email:fallbackEmail,name:m.fullName||fallbackName||fallbackEmail,memberNo:m.memberNo||'',
